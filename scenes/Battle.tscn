@@ -1,0 +1,155 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0battle001"]
+
+[ext_resource type="Script" path="res://scripts/ui/BattleScreen.cs" id="1_bs"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HealthBar.tscn" id="2_hb"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PartyMenu.tscn" id="3_pm"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ItemMenu.tscn" id="4_im"]
+
+[node name="Battle" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bs")
+EnemySprite = NodePath("EnemySprite")
+PlayerSprite = NodePath("PlayerSprite")
+EnemyNameLabel = NodePath("EnemyNameLabel")
+PlayerNameLabel = NodePath("PlayerNameLabel")
+EnemyHpBar = NodePath("EnemyHpBar")
+PlayerHpBar = NodePath("PlayerHpBar")
+MessageLabel = NodePath("MessageLabel")
+ActionMenu = NodePath("ActionMenu")
+MovePicker = NodePath("MovePicker")
+MoveList = NodePath("MovePicker/MoveList")
+PartyMenuRef = NodePath("PartyMenu")
+ItemMenuRef = NodePath("ItemMenu")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.15, 0.15, 0.2, 1)
+
+[node name="EnemySprite" type="TextureRect" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -208.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 208.0
+grow_horizontal = 0
+
+[node name="EnemyNameLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -208.0
+offset_top = 216.0
+offset_right = -16.0
+offset_bottom = 240.0
+text = "Enemy Lv?"
+
+[node name="EnemyHpBar" parent="." instance=ExtResource("2_hb")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -208.0
+offset_top = 244.0
+offset_right = -8.0
+offset_bottom = 268.0
+
+[node name="PlayerSprite" type="TextureRect" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -208.0
+offset_right = -320.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="PlayerNameLabel" type="Label" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -244.0
+offset_right = -320.0
+offset_bottom = -220.0
+text = "Player Lv?"
+
+[node name="PlayerHpBar" parent="." instance=ExtResource("2_hb")]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -216.0
+offset_right = -312.0
+offset_bottom = -192.0
+
+[node name="MessageLabel" type="Label" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+grow_vertical = 0
+text = "..."
+
+[node name="ActionMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 200.0
+offset_bottom = 200.0
+
+[node name="FightButton" type="Button" parent="ActionMenu"]
+offset_right = 184.0
+offset_bottom = 40.0
+text = "Fight"
+
+[node name="CreatureButton" type="Button" parent="ActionMenu"]
+offset_top = 48.0
+offset_right = 184.0
+offset_bottom = 88.0
+text = "Creature"
+
+[node name="ItemButton" type="Button" parent="ActionMenu"]
+offset_top = 96.0
+offset_right = 184.0
+offset_bottom = 136.0
+text = "Item"
+
+[node name="RunButton" type="Button" parent="ActionMenu"]
+offset_top = 144.0
+offset_right = 184.0
+offset_bottom = 184.0
+text = "Run"
+
+[node name="MovePicker" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 220.0
+offset_right = 400.0
+offset_bottom = 420.0
+visible = false
+
+[node name="MoveList" type="VBoxContainer" parent="MovePicker"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PartyMenu" parent="." instance=ExtResource("3_pm")]
+visible = false
+
+[node name="ItemMenu" parent="." instance=ExtResource("4_im")]
+visible = false

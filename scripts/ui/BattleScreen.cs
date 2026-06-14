@@ -1,0 +1,96 @@
+using Godot;
+using rpg_game.scripts.autoload;
+using rpg_game.scripts.battle;
+using rpg_game.scripts.runtime;
+
+namespace rpg_game.scripts.ui;
+
+public partial class BattleScreen : Control
+{
+    [Export] public TextureRect EnemySprite;
+    [Export] public TextureRect PlayerSprite;
+    [Export] public Label EnemyNameLabel;
+    [Export] public Label PlayerNameLabel;
+    [Export] public HealthBar EnemyHpBar;
+    [Export] public HealthBar PlayerHpBar;
+    [Export] public Label MessageLabel;
+    [Export] public Control ActionMenu;
+    [Export] public Control MovePicker;
+    [Export] public VBoxContainer MoveList;
+    [Export] public PartyMenu PartyMenuRef;
+    [Export] public ItemMenu ItemMenuRef;
+
+    public override void _Ready()
+    {
+        var bm = GetNode<BattleManager>("/root/BattleManager");
+        bm.BattleStarted += OnBattleStarted;
+        bm.HpChanged += OnHpChanged;
+        bm.Message += OnMessage;
+        bm.BattleEnded += OnBattleEnded;
+        GetNode<Button>("ActionMenu/FightButton").Pressed += OpenMovePicker;
+        GetNode<Button>("ActionMenu/CreatureButton").Pressed += OpenParty;
+        GetNode<Button>("ActionMenu/ItemButton").Pressed += OpenItems;
+        GetNode<Button>("ActionMenu/RunButton").Pressed += () => bm.Run();
+    }
+
+    private void OnBattleStarted(bool isWild)
+    {
+        ShowActionMenu();
+    }
+
+    private void OnHpChanged(int side, int hp, int hpMax)
+    {
+        if (side == 0) PlayerHpBar.SetValues(hp, hpMax);
+        else EnemyHpBar.SetValues(hp, hpMax);
+    }
+
+    private void OnMessage(string text)
+    {
+        MessageLabel.Text = text;
+    }
+
+    private void OnBattleEnded(int outcome)
+    {
+        MessageLabel.Text = outcome == (int)BattleState.Victory ? "Victory!"
+            : outcome == (int)BattleState.Defeat ? "You blacked out..."
+            : "Got away!";
+        GetTree().CreateTimer(1.5).Timeout += () => GetNode<SceneManager>("/root/SceneManager").GotoOverworld();
+    }
+
+    private void ShowActionMenu()
+    {
+        ActionMenu.Visible = true;
+        MovePicker.Visible = false;
+        PartyMenuRef.Visible = false;
+        ItemMenuRef.Visible = false;
+    }
+
+    private void OpenMovePicker()
+    {
+        ActionMenu.Visible = false;
+        MovePicker.Visible = true;
+        foreach (var c in MoveList.GetChildren()) c.QueueFree();
+        var active = GetNode<Party>("/root/Party").Active;
+        for (int i = 0; i < active.Species.Types.Count; i++)
+        {
+            var t = active.Species.Types[i];
+            var move = new MoveDataLite($"Strike-{i}", t, MoveCategory.Physical, 40, 100);
+            var btn = new Button { Text = move.Name };
+            btn.Pressed += () => { GetNode<BattleManager>("/root/BattleManager").PlayerAttack(move); };
+            MoveList.AddChild(btn);
+        }
+    }
+
+    private void OpenParty()
+    {
+        PartyMenuRef.Rebuild();
+        PartyMenuRef.Visible = true;
+        ActionMenu.Visible = false;
+    }
+
+    private void OpenItems()
+    {
+        ItemMenuRef.Show();
+        ActionMenu.Visible = false;
+    }
+}
