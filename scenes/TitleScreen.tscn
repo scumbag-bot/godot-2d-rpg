@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0title001"]
+
+[ext_resource type="Script" path="res://scripts/ui/TitleScreen.cs" id="1_title"]
+
+[node name="TitleScreen" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_title")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBox"]
+text = "RPG Game"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 48
+
+[node name="NewGameButton" type="Button" parent="VBox"]
+text = "New Game"
