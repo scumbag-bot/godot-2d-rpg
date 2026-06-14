@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/MoveData.cs" id="1_move"]
+
+[resource]
+script = ExtResource("1_move")
+Id = &"holysmite"
+DisplayName = "Holy Smite"
+Type = 3
+Category = 1
+Power = 50
+Accuracy = 90
+Pp = 15
+Description = "Smites undead and demons."

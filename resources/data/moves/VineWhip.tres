@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/MoveData.cs" id="1_move"]
+
+[resource]
+script = ExtResource("1_move")
+Id = &"vinewhip"
+DisplayName = "Vine Whip"
+Type = 0
+Category = 0
+Power = 45
+Accuracy = 100
+Pp = 25
+Description = "Whips with vines."

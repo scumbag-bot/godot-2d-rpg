@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/MoveData.cs" id="1_move"]
+
+[resource]
+script = ExtResource("1_move")
+Id = &"ember"
+DisplayName = "Ember"
+Type = 5
+Category = 1
+Power = 40
+Accuracy = 100
+Pp = 25
+Description = "A weak flame."
