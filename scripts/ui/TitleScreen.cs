@@ -6,7 +6,7 @@ public partial class TitleScreen : Control
 {
     public override void _Ready()
     {
-        GetNode<Button>("VBox/NewGameButton").Pressed += OnNewGamePressed;
+        GetNode<Button>("CenterContainer/VBox/NewGameButton").Pressed += OnNewGamePressed;
     }
 
     private void OnNewGamePressed()
