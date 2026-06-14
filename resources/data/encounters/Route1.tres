@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="EncounterTable" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/EncounterTable.cs" id="1_table"]
+[ext_resource type="Script" path="res://scripts/data/EncounterEntry.cs" id="2_entry"]
+[ext_resource type="Resource" path="res://resources/data/creatures/Wolf.tres" id="3_wolf"]
+[ext_resource type="Resource" path="res://resources/data/creatures/Imp.tres" id="4_imp"]
+[ext_resource type="Resource" path="res://resources/data/creatures/Salamander.tres" id="5_salamander"]
+
+[sub_resource type="Resource" id="Entry1"]
+script = ExtResource("2_entry")
+Species = ExtResource("3_wolf")
+Level = 3
+CaptureEligible = true
+
+[sub_resource type="Resource" id="Entry2"]
+script = ExtResource("2_entry")
+Species = ExtResource("4_imp")
+Level = 4
+CaptureEligible = true
+
+[sub_resource type="Resource" id="Entry3"]
+script = ExtResource("2_entry")
+Species = ExtResource("5_salamander")
+Level = 5
+CaptureEligible = true
+
+[resource]
+script = ExtResource("1_table")
+AreaId = &"route1"
+Entries = [SubResource("Entry1"), SubResource("Entry2"), SubResource("Entry3")]

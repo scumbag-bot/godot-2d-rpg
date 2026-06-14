@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EncounterTable" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/EncounterTable.cs" id="1_table"]
+[ext_resource type="Script" path="res://scripts/data/EncounterEntry.cs" id="2_entry"]
+[ext_resource type="Resource" path="res://resources/data/creatures/Treant.tres" id="3_treant"]
+
+[sub_resource type="Resource" id="Entry1"]
+script = ExtResource("2_entry")
+Species = ExtResource("3_treant")
+Level = 10
+CaptureEligible = false
+
+[resource]
+script = ExtResource("1_table")
+AreaId = &"bossroom"
+Entries = [SubResource("Entry1")]
