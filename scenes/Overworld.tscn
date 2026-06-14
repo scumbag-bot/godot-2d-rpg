@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0over001"]
+
+[ext_resource type="Script" path="res://scripts/overworld/Overworld.cs" id="1_ow"]
+[ext_resource type="PackedScene" path="res://scenes/ui/DialogBox.tscn" id="2_db"]
+[ext_resource type="Script" path="res://scripts/overworld/Player.cs" id="3_pl"]
+
+[node name="Overworld" type="Node2D"]
+script = ExtResource("1_ow")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(400, 300)
+script = ExtResource("3_pl")
+Speed = 80
+
+[node name="Sprite" type="ColorRect" parent="Player"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, 0)
+
+[node name="DialogBox" parent="." instance=ExtResource("2_db")]
+visible = false
