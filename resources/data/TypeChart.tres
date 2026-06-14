@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TypeChart" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/TypeChart.cs" id="1_chart"]
+
+[resource]
+script = ExtResource("1_chart")
+Multipliers = {
+&"Holy->Demon": 2.0,
+&"Demon->Holy": 2.0,
+&"Undead->Holy": 0.5,
+&"Holy->Undead": 0.5,
+&"Elemental->Beast": 2.0,
+&"Beast->Elemental": 2.0,
+&"Arcane->Demon": 0.5,
+&"Demon->Arcane": 0.5
+}
