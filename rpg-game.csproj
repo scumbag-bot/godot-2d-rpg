@@ -4,5 +4,6 @@
     <AssemblyName>RPG-Game</AssemblyName>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests/**/*</DefaultItemExcludes>
   </PropertyGroup>
 </Project>
