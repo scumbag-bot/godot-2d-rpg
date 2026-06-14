@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0hbar001"]
+
+[ext_resource type="Script" path="res://scripts/ui/HealthBar.cs" id="1_hbar"]
+
+[node name="HealthBar" type="Control"]
+custom_minimum_size = Vector2(200, 24)
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 24.0
+script = ExtResource("1_hbar")
