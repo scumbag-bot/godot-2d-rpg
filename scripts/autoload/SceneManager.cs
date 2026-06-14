@@ -18,7 +18,7 @@ public partial class SceneManager : Node
 
     public void GotoOverworld()
     {
-        GotoScene("res://scenes/Overworld.tscn");
+        GotoScene("res://scenes/Town.tscn");
     }
 
     public void GotoBattle()

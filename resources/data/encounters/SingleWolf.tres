@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EncounterEntry" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/EncounterEntry.cs" id="1_entry"]
+[ext_resource type="Resource" path="res://resources/data/creatures/Wolf.tres" id="2_wolf"]
+
+[resource]
+script = ExtResource("1_entry")
+Species = ExtResource("2_wolf")
+Level = 3
+CaptureEligible = true

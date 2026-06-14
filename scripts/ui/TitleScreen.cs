@@ -11,6 +11,6 @@ public partial class TitleScreen : Control
 
     private void OnNewGamePressed()
     {
-        GetTree().ChangeSceneToFile("res://scenes/Overworld.tscn");
+        GetTree().ChangeSceneToFile("res://scenes/Town.tscn");
     }
 }
