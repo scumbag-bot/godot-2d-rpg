@@ -44,6 +44,12 @@ public partial class BattleManager : Node
         if (EnemyInstance.IsFainted)
         {
             EmitSignal(SignalName.Message, $"{EnemyInstance.Species.DisplayName} fainted!");
+            if (IsWild && CurrentEntry.CaptureEligible && GetNode<Party>("/root/Party").HasSpace())
+            {
+                var captured = new CreatureInstance(EnemyInstance.Species, EnemyInstance.Level);
+                GetNode<Party>("/root/Party").Add(captured);
+                EmitSignal(SignalName.Message, $"{captured.Species.DisplayName} joined your party!");
+            }
             EmitSignal(SignalName.BattleEnded, (int)BattleState.Victory);
             return;
         }

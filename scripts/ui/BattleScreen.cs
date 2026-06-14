@@ -51,10 +51,18 @@ public partial class BattleScreen : Control
 
     private void OnBattleEnded(int outcome)
     {
+        var sm = GetNode<SceneManager>("/root/SceneManager");
+        if (outcome == (int)BattleState.Defeat)
+        {
+            MessageLabel.Text = "You blacked out...";
+            var party = GetNode<Party>("/root/Party");
+            foreach (var m in party.Members) m.Heal(m.MaxHp / 2);
+            GetTree().CreateTimer(1.5).Timeout += () => sm.GotoScene("res://scenes/Town.tscn");
+            return;
+        }
         MessageLabel.Text = outcome == (int)BattleState.Victory ? "Victory!"
-            : outcome == (int)BattleState.Defeat ? "You blacked out..."
-            : "Got away!";
-        GetTree().CreateTimer(1.5).Timeout += () => GetNode<SceneManager>("/root/SceneManager").GotoOverworld();
+            : outcome == (int)BattleState.Escaped ? "Got away!" : "...";
+        GetTree().CreateTimer(1.5).Timeout += sm.GotoOverworld;
     }
 
     private void ShowActionMenu()
