@@ -25,3 +25,12 @@ project/assembly_name="RPG-Game"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+
+[autoload]
+
+SceneManager="*res://scripts/autoload/SceneManager.cs"
+GameState="*res://scripts/autoload/GameState.cs"
+Party="*res://scripts/autoload/Party.cs"
+EncounterSystem="*res://scripts/autoload/EncounterSystem.cs"
+BattleManager="*res://scripts/autoload/BattleManager.cs"
+DialogPlayer="*res://scripts/autoload/DialogPlayer.cs"
