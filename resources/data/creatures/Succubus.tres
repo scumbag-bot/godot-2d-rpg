@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CreatureSpecies" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/CreatureSpecies.cs" id="1_species"]
+
+[resource]
+script = ExtResource("1_species")
+Id = &"succubus"
+DisplayName = "Succubus"
+Types = [1]
+BaseHp = 60
+BaseAttack = 60
+BaseDefense = 50
+BaseSpAtk = 80
+BaseSpDef = 65
+BaseSpeed = 75
+Learnset = {
+3: [&"demonbite"]
+}
+PlaceholderColor = Color(0.545, 0.0, 0.545, 1)

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CreatureSpecies" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/CreatureSpecies.cs" id="1_species"]
+
+[resource]
+script = ExtResource("1_species")
+Id = &"salamander"
+DisplayName = "Salamander"
+Types = [5]
+BaseHp = 55
+BaseAttack = 55
+BaseDefense = 50
+BaseSpAtk = 70
+BaseSpDef = 50
+BaseSpeed = 65
+Learnset = {
+3: [&"ember"]
+}
+PlaceholderColor = Color(1.0, 0.271, 0.0, 1)

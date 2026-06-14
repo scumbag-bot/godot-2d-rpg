@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CreatureSpecies" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/CreatureSpecies.cs" id="1_species"]
+
+[resource]
+script = ExtResource("1_species")
+Id = &"wraith"
+DisplayName = "Wraith"
+Types = [2]
+BaseHp = 50
+BaseAttack = 50
+BaseDefense = 50
+BaseSpAtk = 70
+BaseSpDef = 70
+BaseSpeed = 55
+Learnset = {
+3: [&"holysmite"]
+}
+PlaceholderColor = Color(0.439, 0.502, 0.565, 1)

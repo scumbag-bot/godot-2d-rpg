@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CreatureSpecies" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/CreatureSpecies.cs" id="1_species"]
+
+[resource]
+script = ExtResource("1_species")
+Id = &"imp"
+DisplayName = "Imp"
+Types = [1]
+BaseHp = 40
+BaseAttack = 55
+BaseDefense = 35
+BaseSpAtk = 65
+BaseSpDef = 45
+BaseSpeed = 70
+Learnset = {
+3: [&"demonbite"]
+}
+PlaceholderColor = Color(0.698, 0.133, 0.133, 1)

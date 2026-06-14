@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CreatureSpecies" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/CreatureSpecies.cs" id="1_species"]
+
+[resource]
+script = ExtResource("1_species")
+Id = &"treant"
+DisplayName = "Treant"
+Types = [0, 3]
+BaseHp = 90
+BaseAttack = 70
+BaseDefense = 80
+BaseSpAtk = 50
+BaseSpDef = 60
+BaseSpeed = 30
+Learnset = {
+3: [&"vinewhip"]
+}
+PlaceholderColor = Color(0.133, 0.545, 0.133, 1)
