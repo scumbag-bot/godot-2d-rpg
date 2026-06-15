@@ -18,6 +18,11 @@ public partial class Enemy : Area2D
         if (body is not Player) return;
         if (Entry == null) return;
         if (GetNode<autoload.Party>("/root/Party").Active == null) return;
+        CallDeferred(MethodName.TriggerEncounter);
+    }
+
+    private void TriggerEncounter()
+    {
         GetNode<EncounterSystem>("/root/EncounterSystem").Trigger(Entry);
     }
 }
