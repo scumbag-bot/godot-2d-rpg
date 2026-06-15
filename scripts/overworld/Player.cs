@@ -33,6 +33,13 @@ public partial class Player : CharacterBody2D
             _sprite.Play("idle_down");
             _currentAnim = "idle_down";
         }
+
+        var sm = GetNodeOrNull<autoload.SceneManager>("/root/SceneManager");
+        if (sm != null && sm.PendingPlayerPosition.HasValue)
+        {
+            GlobalPosition = sm.PendingPlayerPosition.Value;
+            sm.PendingPlayerPosition = null;
+        }
     }
 
     public override void _PhysicsProcess(double delta)
