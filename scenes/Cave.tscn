@@ -1,0 +1,118 @@
+[gd_scene load_steps=12 format=3 uid="uid://b0cave001"]
+
+[ext_resource type="Script" path="res://scripts/overworld/Overworld.cs" id="1_ow"]
+[ext_resource type="PackedScene" path="res://scenes/ui/DialogBox.tscn" id="2_db"]
+[ext_resource type="Script" path="res://scripts/overworld/Player.cs" id="3_pl"]
+[ext_resource type="Script" path="res://scripts/overworld/Enemy.cs" id="4_en"]
+[ext_resource type="Script" path="res://scripts/overworld/WarpZone.cs" id="5_wz"]
+[ext_resource type="Resource" path="res://resources/data/encounters/SingleWraith.tres" id="6_wraith"]
+[ext_resource type="Resource" path="res://resources/data/encounters/SingleSuccubus.tres" id="7_succ"]
+[ext_resource type="Resource" path="res://resources/data/encounters/SingleBear.tres" id="8_bear"]
+
+[sub_resource type="RectangleShape2D" id="RectShape_enemy"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectShape_warp"]
+size = Vector2(800, 32)
+
+[node name="Cave" type="Node2D"]
+script = ExtResource("1_ow")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 800.0
+color = Color(0.12, 0.10, 0.15, 1)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(400, 700)
+script = ExtResource("3_pl")
+Speed = 80
+SpritePath = NodePath("Sprite")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Enemy" type="Area2D" parent="."]
+position = Vector2(250, 450)
+script = ExtResource("4_en")
+Entry = ExtResource("6_wraith")
+
+[node name="Sprite" type="ColorRect" parent="Enemy"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.7, 0.5, 0.8, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+shape = SubResource("RectShape_enemy")
+
+[node name="Enemy2" type="Area2D" parent="."]
+position = Vector2(550, 380)
+script = ExtResource("4_en")
+Entry = ExtResource("7_succ")
+
+[node name="Sprite" type="ColorRect" parent="Enemy2"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.7, 0.5, 0.8, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2"]
+shape = SubResource("RectShape_enemy")
+
+[node name="Enemy3" type="Area2D" parent="."]
+position = Vector2(400, 250)
+script = ExtResource("4_en")
+Entry = ExtResource("8_bear")
+
+[node name="Sprite" type="ColorRect" parent="Enemy3"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.7, 0.5, 0.8, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy3"]
+shape = SubResource("RectShape_enemy")
+
+[node name="WarpToBoss" type="Area2D" parent="."]
+position = Vector2(400, 50)
+script = ExtResource("5_wz")
+TargetScenePath = "res://scenes/BossRoom.tscn"
+TargetPosition = Vector2(400, 600)
+
+[node name="Sprite" type="ColorRect" parent="WarpToBoss"]
+offset_left = -400.0
+offset_top = -16.0
+offset_right = 400.0
+offset_bottom = 16.0
+color = Color(0.05, 0.05, 0.05, 0.7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToBoss"]
+shape = SubResource("RectShape_warp")
+
+[node name="WarpToRoute1" type="Area2D" parent="."]
+position = Vector2(400, 780)
+script = ExtResource("5_wz")
+TargetScenePath = "res://scenes/Route1.tscn"
+TargetPosition = Vector2(400, 100)
+
+[node name="Sprite" type="ColorRect" parent="WarpToRoute1"]
+offset_left = -400.0
+offset_top = -16.0
+offset_right = 400.0
+offset_bottom = 16.0
+color = Color(0.05, 0.05, 0.05, 0.7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToRoute1"]
+shape = SubResource("RectShape_warp")
+
+[node name="DialogBox" parent="." instance=ExtResource("2_db")]
+visible = false
