@@ -11,13 +11,6 @@ public partial class Npc : Area2D
     public override void _Ready()
     {
         BodyEntered += OnBodyEntered;
-        GetNode<DialogPlayer>("/root/DialogPlayer").DialogFinished += OnDialogFinished;
-    }
-
-    public override void _ExitTree()
-    {
-        var dp = GetNodeOrNull<DialogPlayer>("/root/DialogPlayer");
-        if (dp != null) dp.DialogFinished -= OnDialogFinished;
     }
 
     private void OnBodyEntered(Node2D body)
