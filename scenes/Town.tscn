@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cu7m2v21g0020" path="res://scripts/overworld/Enemy.cs" id="5_en"]
 [ext_resource type="Script" uid="uid://ca4d4r4lsot6q" path="res://scripts/overworld/TownStarter.cs" id="6_ts"]
 [ext_resource type="Resource" path="res://resources/data/encounters/SingleWolf.tres" id="7_wolfentry"]
+[ext_resource type="Script" path="res://scripts/overworld/WarpZone.cs" id="8_wz"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7q67j"]
 texture = ExtResource("2_66q70")
@@ -2096,6 +2097,9 @@ size = Vector2(32, 32)
 [sub_resource type="RectangleShape2D" id="RectShape_enemy"]
 size = Vector2(32, 32)
 
+[sub_resource type="RectangleShape2D" id="RectShape_warp"]
+size = Vector2(800, 32)
+
 [node name="Town" type="Node2D" unique_id=1990011996]
 script = ExtResource("1_ow")
 
@@ -2158,3 +2162,19 @@ layout_mode = 3
 [node name="TownStarter" type="Node" parent="." unique_id=1262800163]
 script = ExtResource("6_ts")
 StarterNpcPath = NodePath("../Npc")
+
+[node name="WarpToRoute1" type="Area2D" parent="."]
+position = Vector2(400, 50)
+script = ExtResource("8_wz")
+TargetScenePath = "res://scenes/Route1.tscn"
+TargetPosition = Vector2(400, 700)
+
+[node name="Sprite" type="ColorRect" parent="WarpToRoute1"]
+offset_left = -400.0
+offset_top = -16.0
+offset_right = 400.0
+offset_bottom = 16.0
+color = Color(0.1, 0.1, 0.1, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToRoute1"]
+shape = SubResource("RectShape_warp")
