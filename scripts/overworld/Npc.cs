@@ -1,13 +1,12 @@
 using Godot;
 using rpg_game.scripts.autoload;
-using rpg_game.scripts.ui;
+using rpg_game.scripts.data;
 
 namespace rpg_game.scripts.overworld;
 
 public partial class Npc : Area2D
 {
-    [Export] public string[] Lines;
-    [Export] public DialogBox DialogBoxRef;
+    [Export] public Godot.Collections.Array<DialogLine> Lines;
 
     public override void _Ready()
     {
@@ -16,9 +15,10 @@ public partial class Npc : Area2D
 
     private void OnBodyEntered(Node2D body)
     {
-        if (body is Player && Lines != null && Lines.Length > 0)
-        {
-            GetNode<DialogPlayer>("/root/DialogPlayer").Play(Lines);
-        }
+        if (body is not Player) return;
+        if (Lines == null || Lines.Count == 0) return;
+        var arr = new DialogLine[Lines.Count];
+        for (int i = 0; i < Lines.Count; i++) arr[i] = Lines[i];
+        GetNode<DialogPlayer>("/root/DialogPlayer").Play(arr);
     }
 }
