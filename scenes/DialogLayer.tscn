@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0dlg001"]
+[gd_scene format=3 uid="uid://b0dlg001"]
 
 [ext_resource type="PackedScene" uid="uid://b0dbox001" path="res://scenes/ui/DialogBox.tscn" id="1_dbox"]
 
 [node name="DialogLayer" type="CanvasLayer"]
+process_mode = 3
 layer = 100
 
 [node name="DialogBox" parent="." instance=ExtResource("1_dbox")]

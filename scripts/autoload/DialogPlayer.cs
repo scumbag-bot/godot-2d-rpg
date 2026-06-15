@@ -12,6 +12,11 @@ public partial class DialogPlayer : Node
 
     public bool IsActive { get; private set; }
 
+    public override void _Ready()
+    {
+        ProcessMode = ProcessModeEnum.Always;
+    }
+
     public async void Play(DialogLine[] lines)
     {
         if (IsActive) return;
@@ -22,6 +27,7 @@ public partial class DialogPlayer : Node
         }
 
         IsActive = true;
+        GetTree().Paused = true;
         EmitSignal(SignalName.DialogStarted);
 
         foreach (var line in lines)
@@ -31,6 +37,7 @@ public partial class DialogPlayer : Node
             await ToSignal(DialogBox.Instance, DialogBox.SignalName.AdvancePressed);
         }
 
+        GetTree().Paused = false;
         IsActive = false;
         EmitSignal(SignalName.DialogFinished);
     }

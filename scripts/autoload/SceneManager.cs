@@ -12,6 +12,7 @@ public partial class SceneManager : Node
     public override void _Ready()
     {
         Instance = this;
+        ProcessMode = ProcessModeEnum.Always;
     }
 
     public void GotoScene(string path)
@@ -39,9 +40,9 @@ public partial class SceneManager : Node
         if (_isWarping) return;
         _isWarping = true;
 
-        var overlay = CreateFadeOverlay();
-        var tweenOut = overlay.CreateTween();
-        tweenOut.TweenProperty(overlay, "modulate:a", 1.0f, 0.2);
+        var (layer, rect) = CreateFadeOverlay();
+        var tweenOut = rect.CreateTween();
+        tweenOut.TweenProperty(rect, "modulate:a", 1.0f, 0.2);
         await ToSignal(tweenOut, Tween.SignalName.Finished);
 
         PendingPlayerPosition = targetPosition;
@@ -50,17 +51,17 @@ public partial class SceneManager : Node
         await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
         await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-        var tweenIn = overlay.CreateTween();
-        tweenIn.TweenProperty(overlay, "modulate:a", 0.0f, 0.2);
+        var tweenIn = rect.CreateTween();
+        tweenIn.TweenProperty(rect, "modulate:a", 0.0f, 0.2);
         await ToSignal(tweenIn, Tween.SignalName.Finished);
-        overlay.QueueFree();
+        layer.QueueFree();
 
         _isWarping = false;
     }
 
-    private CanvasLayer CreateFadeOverlay()
+    private (CanvasLayer layer, ColorRect rect) CreateFadeOverlay()
     {
-        var layer = new CanvasLayer { Layer = 100 };
+        var layer = new CanvasLayer { Layer = 100, ProcessMode = ProcessModeEnum.Always };
         var rect = new ColorRect
         {
             Name = "WarpFade",
@@ -72,6 +73,6 @@ public partial class SceneManager : Node
         rect.AnchorBottom = 1.0f;
         layer.AddChild(rect);
         GetTree().Root.AddChild(layer);
-        return layer;
+        return (layer, rect);
     }
 }
