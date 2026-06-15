@@ -13,9 +13,26 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
-        _sprite = GetNode<AnimatedSprite2D>(SpritePath);
-        if (_sprite.SpriteFrames != null && _sprite.SpriteFrames.HasAnimation("idle_down"))
+        _sprite = GetNodeOrNull<AnimatedSprite2D>(SpritePath);
+        if (_sprite == null)
+        {
+            var names = new System.Text.StringBuilder();
+            foreach (var c in GetChildren()) names.Append(c.Name).Append(", ");
+            GD.PushError($"Player: AnimatedSprite2D not found at '{SpritePath}'. Children: {names}");
+            return;
+        }
+        if (_sprite.SpriteFrames == null)
+        {
+            GD.PushError("Player: Sprite.SpriteFrames is null");
+            return;
+        }
+        var anims = _sprite.SpriteFrames.GetAnimationNames();
+        GD.Print($"Player: sprite OK, anims=[{string.Join(",", anims)}]");
+        if (_sprite.SpriteFrames.HasAnimation("idle_down"))
+        {
             _sprite.Play("idle_down");
+            _currentAnim = "idle_down";
+        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -28,7 +45,7 @@ public partial class Player : CharacterBody2D
 
     private void UpdateAnimation(Vector2 input)
     {
-        if (_sprite == null) return;
+        if (_sprite == null || _sprite.SpriteFrames == null) return;
 
         if (input != Vector2.Zero)
             _facing = input;
@@ -41,11 +58,16 @@ public partial class Player : CharacterBody2D
 
         string desired = (moving ? "walk_" : "idle_") + dir;
 
-        if (_sprite.SpriteFrames == null || !_sprite.SpriteFrames.HasAnimation(desired))
+        if (!_sprite.SpriteFrames.HasAnimation(desired))
+        {
+            GD.PushWarning($"Player: animation '{desired}' missing");
             return;
+        }
 
         if (_currentAnim != desired)
         {
+            GD.Print($"Player: {_currentAnim} -> {desired} (input={input})");
+            _sprite.Stop();
             _sprite.Play(desired);
             _currentAnim = desired;
         }
