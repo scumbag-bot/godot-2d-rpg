@@ -46,6 +46,9 @@ public partial class DialogBox : Control
             Portrait.Texture = portrait;
             Portrait.Visible = portrait != null;
         }
+        var textLeft = (Portrait != null && portrait != null) ? 120.0f : 16.0f;
+        if (NameLabel != null) NameLabel.OffsetLeft = textLeft;
+        if (TextLabel != null) TextLabel.OffsetLeft = textLeft;
         _pendingText = text ?? "";
         if (TextLabel != null)
         {
