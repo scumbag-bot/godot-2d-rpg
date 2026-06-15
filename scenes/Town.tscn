@@ -1902,6 +1902,11 @@ size = Vector2(32, 32)
 [sub_resource type="RectangleShape2D" id="RectShape_warp"]
 size = Vector2(800, 32)
 
+[sub_resource type="Resource" id="Res_DialogLine_1"]
+script = ExtResource("10_dlgline")
+SpeakerName = "Elder"
+Text = "Who are you?"
+
 [node name="Town" type="Node2D" unique_id=1990011996]
 script = ExtResource("1_ow")
 
@@ -1918,11 +1923,6 @@ color = Color(0.3, 0.5, 0.3, 1)
 [node name="Player" parent="." unique_id=530685434 instance=ExtResource("9_player")]
 position = Vector2(400, 400)
 Speed = 120
-
-[sub_resource type="Resource" id="Res_DialogLine_1"]
-script = ExtResource("10_dlgline")
-SpeakerName = "Elder"
-Text = "Who are you?"
 
 [node name="Npc" type="Area2D" parent="." unique_id=1183842659]
 position = Vector2(300, 300)
