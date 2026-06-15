@@ -9,7 +9,7 @@
 [ext_resource type="Resource" path="res://resources/data/encounters/SingleWolf.tres" id="7_wolfentry"]
 [ext_resource type="Script" uid="uid://uh0v6dtubkqo" path="res://scripts/overworld/WarpZone.cs" id="8_wz"]
 [ext_resource type="PackedScene" uid="uid://b0player001" path="res://scenes/Player.tscn" id="9_player"]
-[ext_resource type="Script" path="res://scripts/data/DialogLine.cs" id="10_dlgline"]
+[ext_resource type="Script" uid="uid://cut5qlclogv7y" path="res://scripts/data/DialogLine.cs" id="10_dlgline"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7q67j"]
 texture = ExtResource("2_66q70")
@@ -1922,13 +1922,12 @@ Speed = 120
 [sub_resource type="Resource" id="Res_DialogLine_1"]
 script = ExtResource("10_dlgline")
 SpeakerName = "Elder"
-SpeakerPortrait = null
 Text = "Who are you?"
 
 [node name="Npc" type="Area2D" parent="." unique_id=1183842659]
 position = Vector2(300, 300)
 script = ExtResource("4_npc")
-Lines = Array[Resource]([SubResource("Res_DialogLine_1")])
+Lines = [SubResource("Res_DialogLine_1")]
 
 [node name="Sprite" type="ColorRect" parent="Npc" unique_id=2136368128]
 offset_left = -8.0
