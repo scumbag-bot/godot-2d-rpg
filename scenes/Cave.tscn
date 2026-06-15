@@ -105,9 +105,3 @@ color = Color(0.05, 0.05, 0.05, 0.7)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToRoute1"]
 shape = SubResource("RectShape_warp")
-
-[node name="UILayer" type="CanvasLayer" parent="."]
-layer = 10
-
-[node name="DialogBox" parent="UILayer" instance=ExtResource("2_db")]
-visible = false

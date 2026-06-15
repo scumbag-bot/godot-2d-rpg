@@ -1954,11 +1954,6 @@ color = Color(0.8, 0.2, 0.2, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=886224023]
 shape = SubResource("RectShape_enemy")
 
-[node name="UILayer" type="CanvasLayer" parent="."]
-layer = 10
-
-[node name="DialogBox" parent="UILayer" unique_id=1133852984 instance=ExtResource("2_db")]
-
 [node name="TownStarter" type="Node" parent="." unique_id=1262800163]
 script = ExtResource("6_ts")
 StarterNpcPath = NodePath("../Npc")

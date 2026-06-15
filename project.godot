@@ -11,8 +11,19 @@ config_version=5
 [application]
 
 config/name="RPG-Game"
-config/features=PackedStringArray("4.6", "Forward Plus")
+run/main_scene="uid://b0title001"
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SceneManager="*res://scripts/autoload/SceneManager.cs"
+GameState="*res://scripts/autoload/GameState.cs"
+Party="*res://scripts/autoload/Party.cs"
+EncounterSystem="*res://scripts/autoload/EncounterSystem.cs"
+BattleManager="*res://scripts/autoload/BattleManager.cs"
+DialogPlayer="*res://scripts/autoload/DialogPlayer.cs"
+DialogLayer="*res://scenes/DialogLayer.tscn"
 
 [dotnet]
 
@@ -25,12 +36,3 @@ project/assembly_name="RPG-Game"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-
-[autoload]
-
-SceneManager="*res://scripts/autoload/SceneManager.cs"
-GameState="*res://scripts/autoload/GameState.cs"
-Party="*res://scripts/autoload/Party.cs"
-EncounterSystem="*res://scripts/autoload/EncounterSystem.cs"
-BattleManager="*res://scripts/autoload/BattleManager.cs"
-DialogPlayer="*res://scripts/autoload/DialogPlayer.cs"
