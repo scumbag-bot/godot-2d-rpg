@@ -21,9 +21,19 @@ public partial class BattleManager : Node
 
     public void StartWild(EncounterEntry entry)
     {
+        if (entry?.Species == null)
+        {
+            GD.PushWarning("BattleManager.StartWild: entry or entry.Species is null; ignoring.");
+            return;
+        }
         IsWild = true;
         CurrentEntry = entry;
         PlayerInstance = GetNode<Party>("/root/Party").Active;
+        if (PlayerInstance == null)
+        {
+            GD.PushWarning("BattleManager.StartWild: no active party member; ignoring.");
+            return;
+        }
         EnemyInstance = new CreatureInstance(entry.Species.ToLite(), entry.Level);
         Fsm = new BattleStateMachine();
         EmitSignal(SignalName.BattleStarted, true);

@@ -15,9 +15,9 @@ public partial class Enemy : Area2D
 
     private void OnBodyEntered(Node2D body)
     {
-        if (body is Player && Entry != null)
-        {
-            GetNode<EncounterSystem>("/root/EncounterSystem").Trigger(Entry);
-        }
+        if (body is not Player) return;
+        if (Entry == null) return;
+        if (GetNode<autoload.Party>("/root/Party").Active == null) return;
+        GetNode<EncounterSystem>("/root/EncounterSystem").Trigger(Entry);
     }
 }
