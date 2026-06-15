@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0player001"]
+
+[ext_resource type="Script" path="res://scripts/overworld/Player.cs" id="1_player"]
+
+[sub_resource type="RectangleShape2D" id="RectShape_player"]
+size = Vector2(34, 48)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_player")
+Speed = 80
+SpritePath = NodePath("Sprite")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectShape_player")
+
+[node name="Camera2D" type="Camera2D" parent="."]

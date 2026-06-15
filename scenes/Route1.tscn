@@ -1,13 +1,18 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0route1001"]
+[gd_scene format=3 uid="uid://b0route1001"]
 
-[ext_resource type="Script" path="res://scripts/overworld/Overworld.cs" id="1_ow"]
-[ext_resource type="PackedScene" path="res://scenes/ui/DialogBox.tscn" id="2_db"]
-[ext_resource type="Script" path="res://scripts/overworld/Player.cs" id="3_pl"]
-[ext_resource type="Script" path="res://scripts/overworld/Enemy.cs" id="4_en"]
-[ext_resource type="Script" path="res://scripts/overworld/WarpZone.cs" id="5_wz"]
+[ext_resource type="Script" uid="uid://jv6wlauqcdc6" path="res://scripts/overworld/Overworld.cs" id="1_ow"]
+[ext_resource type="PackedScene" uid="uid://b0dbox001" path="res://scenes/ui/DialogBox.tscn" id="2_db"]
+[ext_resource type="Script" uid="uid://diuro1nbhifdq" path="res://scripts/overworld/Player.cs" id="3_pl"]
+[ext_resource type="SpriteFrames" uid="uid://ky6nbs8gg3eh" path="res://resources/images/actors/actors_1.tres" id="3_qmo2c"]
+[ext_resource type="Script" uid="uid://cu7m2v21g0020" path="res://scripts/overworld/Enemy.cs" id="4_en"]
+[ext_resource type="Script" uid="uid://uh0v6dtubkqo" path="res://scripts/overworld/WarpZone.cs" id="5_wz"]
 [ext_resource type="Resource" path="res://resources/data/encounters/SingleWolf.tres" id="6_wolf"]
 [ext_resource type="Resource" path="res://resources/data/encounters/SingleImp.tres" id="7_imp"]
 [ext_resource type="Resource" path="res://resources/data/encounters/SingleSalamander.tres" id="8_sal"]
+[ext_resource type="PackedScene" uid="uid://b0player001" path="res://scenes/Player.tscn" id="9_player"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ideib"]
+size = Vector2(36, 50)
 
 [sub_resource type="RectangleShape2D" id="RectShape_enemy"]
 size = Vector2(32, 32)
@@ -15,104 +20,96 @@ size = Vector2(32, 32)
 [sub_resource type="RectangleShape2D" id="RectShape_warp"]
 size = Vector2(800, 32)
 
-[node name="Route1" type="Node2D"]
+[node name="Route1" type="Node2D" unique_id=591741178]
 script = ExtResource("1_ow")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1420511972]
 offset_right = 800.0
 offset_bottom = 800.0
 color = Color(0.25, 0.45, 0.25, 1)
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=525363233]
 
-[node name="Player" type="CharacterBody2D" parent="."]
+[node name="Player" parent="." instance=ExtResource("9_player")]
 position = Vector2(400, 700)
-script = ExtResource("3_pl")
-Speed = 80
-SpritePath = NodePath("Sprite")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="Player"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-
-[node name="Enemy" type="Area2D" parent="."]
+[node name="Enemy" type="Area2D" parent="." unique_id=1495454346]
 position = Vector2(200, 400)
 script = ExtResource("4_en")
 Entry = ExtResource("6_wolf")
 
-[node name="Sprite" type="ColorRect" parent="Enemy"]
+[node name="Sprite" type="ColorRect" parent="Enemy" unique_id=1049821234]
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(0.8, 0.2, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=1091070811]
 shape = SubResource("RectShape_enemy")
 
-[node name="Enemy2" type="Area2D" parent="."]
+[node name="Enemy2" type="Area2D" parent="." unique_id=251685299]
 position = Vector2(500, 350)
 script = ExtResource("4_en")
 Entry = ExtResource("7_imp")
 
-[node name="Sprite" type="ColorRect" parent="Enemy2"]
+[node name="Sprite" type="ColorRect" parent="Enemy2" unique_id=1863922241]
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(0.8, 0.2, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2" unique_id=407240667]
 shape = SubResource("RectShape_enemy")
 
-[node name="Enemy3" type="Area2D" parent="."]
+[node name="Enemy3" type="Area2D" parent="." unique_id=925497982]
 position = Vector2(650, 250)
 script = ExtResource("4_en")
 Entry = ExtResource("8_sal")
 
-[node name="Sprite" type="ColorRect" parent="Enemy3"]
+[node name="Sprite" type="ColorRect" parent="Enemy3" unique_id=1102500212]
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(0.8, 0.2, 0.2, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy3" unique_id=604926141]
 shape = SubResource("RectShape_enemy")
 
-[node name="WarpToCave" type="Area2D" parent="."]
+[node name="WarpToCave" type="Area2D" parent="." unique_id=946127728]
 position = Vector2(400, 50)
 script = ExtResource("5_wz")
 TargetScenePath = "res://scenes/Cave.tscn"
 TargetPosition = Vector2(400, 700)
 
-[node name="Sprite" type="ColorRect" parent="WarpToCave"]
+[node name="Sprite" type="ColorRect" parent="WarpToCave" unique_id=2079620095]
 offset_left = -400.0
 offset_top = -16.0
 offset_right = 400.0
 offset_bottom = 16.0
 color = Color(0.1, 0.1, 0.1, 0.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToCave"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToCave" unique_id=483811865]
 shape = SubResource("RectShape_warp")
 
-[node name="WarpToTown" type="Area2D" parent="."]
+[node name="WarpToTown" type="Area2D" parent="." unique_id=1599763248]
 position = Vector2(400, 780)
 script = ExtResource("5_wz")
 TargetScenePath = "res://scenes/Town.tscn"
 TargetPosition = Vector2(400, 100)
 
-[node name="Sprite" type="ColorRect" parent="WarpToTown"]
+[node name="Sprite" type="ColorRect" parent="WarpToTown" unique_id=175138498]
 offset_left = -400.0
 offset_top = -16.0
 offset_right = 400.0
 offset_bottom = 16.0
 color = Color(0.1, 0.1, 0.1, 0.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToTown"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpToTown" unique_id=82861610]
 shape = SubResource("RectShape_warp")
 
-[node name="DialogBox" parent="." instance=ExtResource("2_db")]
+[node name="DialogBox" parent="." unique_id=1989059365 instance=ExtResource("2_db")]
 visible = false
+layout_mode = 3
