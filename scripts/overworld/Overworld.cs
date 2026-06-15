@@ -13,6 +13,12 @@ public partial class Overworld : Node2D
         GetNode<GameState>("/root/GameState").SetMode(GameState.Mode.Overworld);
     }
 
+    public override void _ExitTree()
+    {
+        var es = GetNodeOrNull<EncounterSystem>("/root/EncounterSystem");
+        if (es != null) es.EncounterTriggered -= OnEncounter;
+    }
+
     private void OnEncounter(EncounterEntry entry)
     {
         GetNode<BattleManager>("/root/BattleManager").StartWild(entry);
