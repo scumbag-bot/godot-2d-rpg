@@ -19,9 +19,9 @@ public class QuestState
         return old != stage;
     }
 
-    public bool Advance(string questId)
+    public void Advance(string questId)
     {
-        return SetStage(questId, GetStage(questId) + 1);
+        SetStage(questId, GetStage(questId) + 1);
     }
 
     public bool GetFlag(string flagName) => _flags.Contains(flagName);
