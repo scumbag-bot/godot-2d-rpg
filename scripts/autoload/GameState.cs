@@ -8,16 +8,21 @@ public partial class GameState : Node
     public enum Mode { Title, Overworld, Battle, Dialog }
 
     public Mode Current { get; private set; } = Mode.Title;
-    public Dictionary<string, int> Inventory { get; } = new()
+
+    private Dictionary<string, int> _inventory = new()
     {
         { "Dummy Potion", 2 },
     };
+
+    public Dictionary<string, int> Inventory => _inventory;
 
     [Signal] public delegate void ModeChangedEventHandler(int mode);
 
     public override void _Ready()
     {
-        if (Inventory.Count == 0) Inventory["Dummy Potion"] = 2;
+        if (_inventory == null) _inventory = new Dictionary<string, int>();
+        if (_inventory.Count == 0) _inventory["Dummy Potion"] = 2;
+        GD.Print($"[GameState] _Ready: Inventory count = {_inventory.Count}, has Dummy Potion = {_inventory.ContainsKey("Dummy Potion")}");
     }
 
     public void SetMode(Mode mode)
