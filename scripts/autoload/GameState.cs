@@ -22,7 +22,6 @@ public partial class GameState : Node
     {
         if (_inventory == null) _inventory = new Dictionary<string, int>();
         if (_inventory.Count == 0) _inventory["Dummy Potion"] = 2;
-        GD.Print($"[GameState] _Ready: Inventory count = {_inventory.Count}, has Dummy Potion = {_inventory.ContainsKey("Dummy Potion")}");
     }
 
     public void SetMode(Mode mode)

@@ -28,7 +28,6 @@ public partial class ItemMenu : Control
         foreach (var child in SlotContainer.GetChildren()) child.QueueFree();
         var gs = GetNode<GameState>("/root/GameState");
         var inv = gs.Inventory;
-        GD.Print($"[ItemMenu] Show: Inventory count = {inv.Count}, items = [{string.Join(", ", inv.Keys)}]");
         if (inv.Count == 0)
         {
             var row = new HBoxContainer();
