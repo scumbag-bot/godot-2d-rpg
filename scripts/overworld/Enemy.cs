@@ -14,12 +14,13 @@ public partial class Enemy : Area2D
 
     public override void _Ready()
     {
-        CallDeferred(MethodName.CaptureInitialBodies);
+        GetTree().PhysicsFrame += CaptureAfterPhysics;
     }
 
-    private void CaptureInitialBodies()
+    private void CaptureAfterPhysics()
     {
         if (!IsInstanceValid(this)) return;
+        GetTree().PhysicsFrame -= CaptureAfterPhysics;
         _initialBodies = new(GetOverlappingBodies());
         BodyEntered += OnBodyEntered;
     }
@@ -34,7 +35,7 @@ public partial class Enemy : Area2D
         if (body is not Player) return;
         if (Entry == null) return;
         if (GetNode<autoload.Party>("/root/Party").Active == null) return;
-        Monitoring = false;
+        SetDeferred("monitoring", false);
         CallDeferred(MethodName.TriggerEncounter);
         StartCooldown();
     }
@@ -42,7 +43,7 @@ public partial class Enemy : Area2D
     private void StartCooldown()
     {
         var timer = GetTree().CreateTimer(ReEnableDelay);
-        timer.Timeout += () => { if (IsInstanceValid(this)) Monitoring = true; };
+        timer.Timeout += () => { if (IsInstanceValid(this)) SetDeferred("monitoring", true); };
     }
 
     private void TriggerEncounter()
