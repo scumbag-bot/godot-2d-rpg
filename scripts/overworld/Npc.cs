@@ -8,7 +8,7 @@ public partial class Npc : Area2D
 {
     [Export] public Godot.Collections.Array<DialogLine> Lines;
     [Export] public StringName NpcId = "";
-    [Export] public StringName ActiveQuestId = "main";
+    private static readonly StringName MainQuestId = "main";
 
     private bool _awaitingDialogCompletion;
 
@@ -32,7 +32,7 @@ public partial class Npc : Area2D
         var quest = ResolveActiveQuest();
         if (quest != null)
         {
-            var stageIdx = GetNode<QuestStore>("/root/QuestStore").GetStage(ActiveQuestId);
+            var stageIdx = GetNode<QuestStore>("/root/QuestStore").GetStage(MainQuestId);
             if (stageIdx >= 0 && stageIdx < quest.Stages.Count)
             {
                 var stage = quest.Stages[stageIdx];
@@ -61,12 +61,11 @@ public partial class Npc : Area2D
     {
         if (!_awaitingDialogCompletion) return;
         _awaitingDialogCompletion = false;
-        GetNode<QuestStore>("/root/QuestStore").Advance(ActiveQuestId);
+        GetNode<QuestStore>("/root/QuestStore").Advance(MainQuestId);
     }
 
     private QuestData ResolveActiveQuest()
     {
-        if (ActiveQuestId.IsEmpty) return null;
         return GD.Load<QuestData>(QuestPaths.Main);
     }
 
