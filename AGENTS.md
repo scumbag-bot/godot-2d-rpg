@@ -64,6 +64,7 @@ Tests live in `tests/rpg-game.Tests/` and are excluded from the main project via
 
 ## Repo-Specific Workflow
 
+- **Always work on a branch for new features or non-trivial fixes.** Branch name format: `feat/{slug}`, `fix/{slug}`, `refactor/{slug}`. Create the branch from `main` before the first commit, do the work, then merge back to `main` (fast-forward or `--no-ff`) when done. Don't commit feature work directly to `main` — it floods the history and makes the WIP mess worse if interrupted. Small one-line fixes or doc tweaks can go directly to `main`.
 - **Plan format:** `docs/superpowers/plans/YYYY-MM-DD-{slug}.md` — sequence of small tasks, each scoped to one commit/agent. Follow this format if you write a new plan.
 - **Test format:** NUnit 4 (`[TestFixture]`, `[Test]`). Pure C# only — don't put Godot scene code in unit tests; that's what the smoke test checklist is for.
 - **Commit style:** short imperative subject, optional scope prefix (e.g. `feat(quest):`, `refactor(scene):`, `fix(player):`). Body only if commit is non-obvious.
