@@ -11,16 +11,19 @@ public partial class Enemy : Area2D
 
     private Godot.Collections.Array<Node2D> _initialBodies = new();
     private bool _initialConsumed = false;
+    private int _physicsFramesWaited = 0;
 
     public override void _Ready()
     {
-        GetTree().PhysicsFrame += CaptureAfterPhysics;
+        GetTree().PhysicsFrame += OnPhysicsFrame;
     }
 
-    private void CaptureAfterPhysics()
+    private void OnPhysicsFrame()
     {
         if (!IsInstanceValid(this)) return;
-        GetTree().PhysicsFrame -= CaptureAfterPhysics;
+        _physicsFramesWaited++;
+        if (_physicsFramesWaited < 2) return;
+        GetTree().PhysicsFrame -= OnPhysicsFrame;
         _initialBodies = new(GetOverlappingBodies());
         BodyEntered += OnBodyEntered;
     }
