@@ -61,7 +61,7 @@ public partial class Npc : Area2D
     private QuestData ResolveActiveQuest()
     {
         if (ActiveQuestId.IsEmpty) return null;
-        return GD.Load<QuestData>($"res://resources/data/quests/{ActiveQuestId}.tres");
+        return GD.Load<QuestData>("res://resources/data/quests/MainQuest.tres");
     }
 
     private static DialogPerNpcEntry FindEntryForNpc(QuestStage stage, StringName npcId)
