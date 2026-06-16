@@ -9,22 +9,28 @@ public partial class Enemy : Area2D
     [Export] public EncounterEntry Entry;
     [Export] public float ReEnableDelay = 1.5f;
 
+    private Godot.Collections.Array<Node2D> _initialBodies = new();
+    private bool _initialConsumed = false;
+
     public override void _Ready()
     {
-        Monitoring = false;
-        BodyEntered += OnBodyEntered;
-        CallDeferred(MethodName.EnableMonitoring);
+        CallDeferred(MethodName.CaptureInitialBodies);
     }
 
-    private void EnableMonitoring()
+    private void CaptureInitialBodies()
     {
         if (!IsInstanceValid(this)) return;
-        Monitoring = true;
+        _initialBodies = new(GetOverlappingBodies());
+        BodyEntered += OnBodyEntered;
     }
 
     private void OnBodyEntered(Node2D body)
     {
-        if (!Monitoring) return;
+        if (!_initialConsumed)
+        {
+            _initialConsumed = true;
+            if (_initialBodies.Contains(body)) return;
+        }
         if (body is not Player) return;
         if (Entry == null) return;
         if (GetNode<autoload.Party>("/root/Party").Active == null) return;
@@ -36,7 +42,7 @@ public partial class Enemy : Area2D
     private void StartCooldown()
     {
         var timer = GetTree().CreateTimer(ReEnableDelay);
-        timer.Timeout += EnableMonitoring;
+        timer.Timeout += () => { if (IsInstanceValid(this)) Monitoring = true; };
     }
 
     private void TriggerEncounter()
