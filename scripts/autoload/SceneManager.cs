@@ -52,7 +52,7 @@ public partial class SceneManager : Node
             return;
         }
         var path = _returnScenePath;
-        var pos = _returnPlayerPosition + new Vector2(0, -32);
+        var pos = _returnPlayerPosition;
         _returnScenePath = null;
         _returnPlayerPosition = Vector2.Zero;
         WarpTo(path, pos);
