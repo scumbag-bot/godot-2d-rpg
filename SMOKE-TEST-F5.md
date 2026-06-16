@@ -37,6 +37,21 @@ for full play-through.
 | 9 | Portrait TextureRect hidden when SpeakerPortrait is null | PASS |
 | 10 | DialogBox.Instance null guard in DialogPlayer.Play | PASS |
 
+## Quest System (main quest)
+
+| # | Check | Result |
+|---|---|---|
+| 1 | `MainQuest.tres` has 6 stages with AdvanceOn + target fields; sub_resources before [resource]; load_steps=19 | PASS |
+| 2 | `Npc.cs` loads `res://resources/data/quests/MainQuest.tres` (hardcoded) | PASS |
+| 3 | `BattleManager.cs` loads same hardcoded path in `TryAdvanceOnBattleWin` | PASS |
+| 4 | `Town.tscn` Elder Npc has `NpcId = &"elder"` AND retains `Lines` fallback | PASS |
+| 5 | `project.godot` has `QuestStore="*res://scripts/autoload/QuestStore.cs"` | PASS |
+| 6 | `QuestState` (pure C#) split from `QuestStore` (Node) per BattleStateMachine/BattleManager precedent | PASS |
+| 7 | `Npc._ExitTree` unsubscribes `DialogPlayer.DialogFinished` (no leak) | PASS |
+| 8 | `QuestStore.Advance` only emits `StageAdvanced` when state actually changes | PASS |
+| 9 | `BattleManager.TryAdvanceOnBattleWin` short-circuits on stage -1 (pre-quest) | PASS |
+| 10 | `dotnet test` -> 25/25 passed (18 existing + 7 QuestState tests) | PASS |
+
 ## Runtime paths to validate in Godot editor
 
 1. Title -> New Game -> Overworld
@@ -52,9 +67,21 @@ for full play-through.
 11. Mouse click on dialog area also advances
 12. Re-enter NPC -> dialog replays from line 1
 
+## Quest runtime path to validate in Godot editor
+
+1. New Game -> Town. `QuestStore.GetStage("main")` returns -1 (no progress).
+2. Walk into Elder -> falls back to `Lines` export ("Who are you?" + "Why are you here?") since stage is -1 < 0.
+3. Force-advance stage to 0 (no UI for this in v1; can test by editing TownStarter to call `QuestStore.SetStage("main", 0)`).
+4. Walk into Elder -> plays `DlgEntry_Elder_0` ("Brave tamer..." + "Take this Wolf..."). On dialog end, `_awaitingDialogCompletion` triggers `Advance` -> stage 1.
+5. Walk into Wolf encounter, win battle -> `TryAdvanceOnBattleWin` matches `BattleWin` + species `wolf` -> stage 2.
+6. Walk into Elder -> plays `DlgEntry_Elder_2` ("You returned..." + "Seek the Treant..."). Stage advances to 3.
+7. Walk into Cave (stage 3 `AreaEnter` target `cave`) -> not implemented in v1; stage 3 stays.
+8. (Manual SetStage to 4 for testing) Battle Treant in BossRoom -> stage 5.
+9. Walk into Elder -> plays `DlgEntry_Elder_5` ("The land is saved..."). Stage stays at 5 (`AdvanceOn = None`).
+
 ## Build / test
 
 ```
 dotnet build rpg-game.sln -c Debug   # 0 errors
-dotnet test tests/rpg-game.Tests/rpg-game.Tests.csproj   # 18/18
+dotnet test tests/rpg-game.Tests/rpg-game.Tests.csproj   # 25/25
 ```
