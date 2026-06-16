@@ -33,6 +33,18 @@ public partial class BattleScreen : Control
         GetNode<Button>("ActionMenu/RunButton").Pressed += () => bm.Run();
     }
 
+    public override void _ExitTree()
+    {
+        var bm = GetNodeOrNull<BattleManager>("/root/BattleManager");
+        if (bm != null)
+        {
+            bm.BattleStarted -= OnBattleStarted;
+            bm.HpChanged -= OnHpChanged;
+            bm.Message -= OnMessage;
+            bm.BattleEnded -= OnBattleEnded;
+        }
+    }
+
     private void OnBattleStarted(bool isWild)
     {
         ShowActionMenu();
