@@ -18,6 +18,12 @@ public partial class Npc : Area2D
         GetNode<DialogPlayer>("/root/DialogPlayer").DialogFinished += OnDialogFinished;
     }
 
+    public override void _ExitTree()
+    {
+        var dp = GetNodeOrNull<DialogPlayer>("/root/DialogPlayer");
+        if (dp != null) dp.DialogFinished -= OnDialogFinished;
+    }
+
     private void OnBodyEntered(Node2D body)
     {
         if (body is not Player) return;
