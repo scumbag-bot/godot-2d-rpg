@@ -62,7 +62,7 @@ public partial class BattleScreen : Control
         }
         MessageLabel.Text = outcome == (int)BattleState.Victory ? "Victory!"
             : outcome == (int)BattleState.Escaped ? "Got away!" : "...";
-        GetTree().CreateTimer(1.5).Timeout += sm.GotoOverworld;
+        GetTree().CreateTimer(1.5).Timeout += sm.ReturnFromBattle;
     }
 
     private void ShowActionMenu()

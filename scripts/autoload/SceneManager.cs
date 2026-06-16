@@ -8,6 +8,8 @@ public partial class SceneManager : Node
     public Vector2? PendingPlayerPosition { get; set; }
 
     private bool _isWarping;
+    private string _returnScenePath;
+    private Vector2 _returnPlayerPosition;
 
     public override void _Ready()
     {
@@ -28,6 +30,32 @@ public partial class SceneManager : Node
     public void GotoBattle()
     {
         GotoScene("res://scenes/Battle.tscn");
+    }
+
+    public void BeginBattle(Vector2 playerPosition)
+    {
+        var current = GetTree().CurrentScene;
+        if (current != null && !string.IsNullOrEmpty(current.SceneFilePath)
+            && !current.SceneFilePath.EndsWith("Battle.tscn"))
+        {
+            _returnScenePath = current.SceneFilePath;
+            _returnPlayerPosition = playerPosition;
+        }
+        GotoScene("res://scenes/Battle.tscn");
+    }
+
+    public void ReturnFromBattle()
+    {
+        if (string.IsNullOrEmpty(_returnScenePath))
+        {
+            GotoOverworld();
+            return;
+        }
+        var path = _returnScenePath;
+        var pos = _returnPlayerPosition;
+        _returnScenePath = null;
+        _returnPlayerPosition = Vector2.Zero;
+        WarpTo(path, pos);
     }
 
     public void GotoTitle()

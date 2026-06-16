@@ -22,6 +22,7 @@ public partial class Overworld : Node2D
     private void OnEncounter(EncounterEntry entry)
     {
         GetNode<BattleManager>("/root/BattleManager").StartWild(entry);
-        GetNode<SceneManager>("/root/SceneManager").GotoBattle();
+        var pos = GetNode<Player>("Player").GlobalPosition;
+        GetNode<SceneManager>("/root/SceneManager").BeginBattle(pos);
     }
 }
