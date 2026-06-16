@@ -1,0 +1,94 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/QuestData.cs" id="1_qdata"]
+[ext_resource type="Script" path="res://scripts/data/QuestStage.cs" id="2_qstage"]
+[ext_resource type="Script" path="res://scripts/data/DialogPerNpcEntry.cs" id="3_dlgpne"]
+[ext_resource type="Script" path="res://scripts/data/DialogLine.cs" id="4_dlgline"]
+
+[sub_resource type="Resource" id="DlgLine_0_0"]
+script = ExtResource("4_dlgline")
+SpeakerName = "Elder"
+Text = "Brave tamer, the forest stirs with strange creatures."
+
+[sub_resource type="Resource" id="DlgLine_0_1"]
+script = ExtResource("4_dlgline")
+SpeakerName = "Elder"
+Text = "Take this Wolf. Prove yourself."
+
+[sub_resource type="Resource" id="DlgEntry_Elder_0"]
+script = ExtResource("3_dlgpne")
+NpcId = &"elder"
+Lines = [SubResource("DlgLine_0_0"), SubResource("DlgLine_0_1")]
+
+[sub_resource type="Resource" id="DlgLine_2_0"]
+script = ExtResource("4_dlgline")
+SpeakerName = "Elder"
+Text = "You returned. The cave to the north holds the source of corruption."
+
+[sub_resource type="Resource" id="DlgLine_2_1"]
+script = ExtResource("4_dlgline")
+SpeakerName = "Elder"
+Text = "Seek the Treant. End this."
+
+[sub_resource type="Resource" id="DlgEntry_Elder_2"]
+script = ExtResource("3_dlgpne")
+NpcId = &"elder"
+Lines = [SubResource("DlgLine_2_0"), SubResource("DlgLine_2_1")]
+
+[sub_resource type="Resource" id="DlgLine_5_0"]
+script = ExtResource("4_dlgline")
+SpeakerName = "Elder"
+Text = "The land is saved. Quest complete."
+
+[sub_resource type="Resource" id="DlgEntry_Elder_5"]
+script = ExtResource("3_dlgpne")
+NpcId = &"elder"
+Lines = [SubResource("DlgLine_5_0")]
+
+[sub_resource type="Resource" id="Stage0"]
+script = ExtResource("2_qstage")
+Id = &"intro"
+DialogPerNpc = [SubResource("DlgEntry_Elder_0")]
+AdvanceOn = 1
+TargetNpcId = &"elder"
+
+[sub_resource type="Resource" id="Stage1"]
+script = ExtResource("2_qstage")
+Id = &"first_battle"
+DialogPerNpc = []
+AdvanceOn = 2
+TargetSpeciesId = &"wolf"
+
+[sub_resource type="Resource" id="Stage2"]
+script = ExtResource("2_qstage")
+Id = &"elder_blessing"
+DialogPerNpc = [SubResource("DlgEntry_Elder_2")]
+AdvanceOn = 1
+TargetNpcId = &"elder"
+
+[sub_resource type="Resource" id="Stage3"]
+script = ExtResource("2_qstage")
+Id = &"cave_enter"
+DialogPerNpc = []
+AdvanceOn = 3
+TargetAreaId = &"cave"
+
+[sub_resource type="Resource" id="Stage4"]
+script = ExtResource("2_qstage")
+Id = &"boss"
+DialogPerNpc = []
+AdvanceOn = 2
+TargetSpeciesId = &"treant"
+
+[sub_resource type="Resource" id="Stage5"]
+script = ExtResource("2_qstage")
+Id = &"complete"
+DialogPerNpc = [SubResource("DlgEntry_Elder_5")]
+AdvanceOn = 0
+
+[resource]
+script = ExtResource("1_qdata")
+Id = &"main"
+DisplayName = "Main Quest"
+Stages = [SubResource("Stage0"), SubResource("Stage1"), SubResource("Stage2"), SubResource("Stage3"), SubResource("Stage4"), SubResource("Stage5")]
+StartStage = 0

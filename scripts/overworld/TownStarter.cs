@@ -23,6 +23,7 @@ public partial class TownStarter : Node
         var wolf = GD.Load<CreatureSpecies>("res://resources/data/creatures/Wolf.tres");
         var inst = new CreatureInstance(wolf.ToLite(), 5);
         GetNode<Party>("/root/Party").Add(inst);
+        GetNode<QuestStore>("/root/QuestStore").SetStage("main", 0);
         GetNode<DialogPlayer>("/root/DialogPlayer").Play(new[]
         {
             new DialogLine { SpeakerName = "", SpeakerPortrait = null, Text = "You received a Wolf!" },

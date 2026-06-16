@@ -24,6 +24,7 @@ EncounterSystem="*res://scripts/autoload/EncounterSystem.cs"
 BattleManager="*res://scripts/autoload/BattleManager.cs"
 DialogPlayer="*res://scripts/autoload/DialogPlayer.cs"
 DialogLayer="*res://scenes/DialogLayer.tscn"
+QuestStore="*res://scripts/autoload/QuestStore.cs"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [dotnet]

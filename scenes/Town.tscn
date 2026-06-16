@@ -1931,6 +1931,7 @@ position = Vector2(400, 400)
 [node name="Npc" type="Area2D" parent="." unique_id=1183842659]
 position = Vector2(300, 300)
 script = ExtResource("4_npc")
+NpcId = &"elder"
 Lines = [SubResource("Res_DialogLine_1"), SubResource("Resource_7q67j")]
 
 [node name="Sprite" type="ColorRect" parent="Npc" unique_id=2136368128]

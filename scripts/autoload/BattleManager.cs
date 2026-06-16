@@ -62,6 +62,10 @@ public partial class BattleManager : Node
 				GetNode<Party>("/root/Party").Add(captured);
 				EmitSignal(SignalName.Message, $"{captured.Species.DisplayName} joined your party!");
 			}
+			if (IsWild && CurrentEntry?.Species != null)
+			{
+				TryAdvanceOnBattleWin(CurrentEntry.Species.Id);
+			}
 			EmitSignal(SignalName.BattleEnded, (int)BattleState.Victory);
 			LastBattleEntry = CurrentEntry;
 			LastBattleOutcome = (int)BattleState.Victory;
@@ -93,6 +97,19 @@ public partial class BattleManager : Node
 			return;
 		}
 		EmitSignal(SignalName.StateChanged, (int)BattleState.PlayerTurn);
+	}
+
+	private void TryAdvanceOnBattleWin(StringName defeatedSpeciesId)
+	{
+		var quest = GD.Load<QuestData>(QuestPaths.Main);
+		if (quest == null) return;
+		var qs = GetNode<QuestStore>("/root/QuestStore");
+		var stageIdx = qs.GetStage(quest.Id);
+		if (stageIdx < 0 || stageIdx >= quest.Stages.Count) return;
+		var stage = quest.Stages[stageIdx];
+		if (stage.AdvanceOn != QuestStage.AdvanceTrigger.BattleWin) return;
+		if (stage.TargetSpeciesId != defeatedSpeciesId) return;
+		qs.Advance(quest.Id);
 	}
 
 	private MoveDataLite PickEnemyMove()
