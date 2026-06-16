@@ -1,18 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0player001"]
+[gd_scene format=3 uid="uid://b0player001"]
 
-[ext_resource type="Script" path="res://scripts/overworld/Player.cs" id="1_player"]
+[ext_resource type="Script" uid="uid://diuro1nbhifdq" path="res://scripts/overworld/Player.cs" id="1_player"]
+[ext_resource type="SpriteFrames" uid="uid://ky6nbs8gg3eh" path="res://resources/images/actors/actors_1.tres" id="2_v6fml"]
 
 [sub_resource type="RectangleShape2D" id="RectShape_player"]
 size = Vector2(34, 48)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=1663221306]
 script = ExtResource("1_player")
-Speed = 80
-SpritePath = NodePath("Sprite")
+Speed = 120
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=289947343]
+sprite_frames = ExtResource("2_v6fml")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1996610930]
 shape = SubResource("RectShape_player")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1435855857]

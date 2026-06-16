@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0item001"]
+[gd_scene format=3 uid="uid://b0item001"]
 
-[ext_resource type="Script" path="res://scripts/ui/ItemMenu.cs" id="1_item"]
+[ext_resource type="Script" uid="uid://cdlp77f2l3h6s" path="res://scripts/ui/ItemMenu.cs" id="1_item"]
 
-[node name="ItemMenu" type="Control"]
+[node name="ItemMenu" type="Control" unique_id=19694219 node_paths=PackedStringArray("SlotContainer", "BackButton")]
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -18,15 +19,15 @@ script = ExtResource("1_item")
 SlotContainer = NodePath("Panel/SlotContainer")
 BackButton = NodePath("Panel/BackButton")
 
-[node name="Panel" type="Panel" parent="."]
-anchors_preset = 15
+[node name="Panel" type="Panel" parent="." unique_id=235594518]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SlotContainer" type="VBoxContainer" parent="Panel"]
-anchors_preset = 15
+[node name="SlotContainer" type="VBoxContainer" parent="Panel" unique_id=1198834168]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
@@ -36,7 +37,8 @@ offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BackButton" type="Button" parent="Panel"]
+[node name="BackButton" type="Button" parent="Panel" unique_id=2088666491]
+layout_mode = 0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0

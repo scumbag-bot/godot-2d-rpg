@@ -24,10 +24,15 @@ EncounterSystem="*res://scripts/autoload/EncounterSystem.cs"
 BattleManager="*res://scripts/autoload/BattleManager.cs"
 DialogPlayer="*res://scripts/autoload/DialogPlayer.cs"
 DialogLayer="*res://scenes/DialogLayer.tscn"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [dotnet]
 
 project/assembly_name="RPG-Game"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
 [physics]
 

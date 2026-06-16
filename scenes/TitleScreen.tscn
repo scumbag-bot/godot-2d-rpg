@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0title001"]
+[gd_scene format=3 uid="uid://b0title001"]
 
-[ext_resource type="Script" path="res://scripts/ui/TitleScreen.cs" id="1_title"]
+[ext_resource type="Script" uid="uid://wbe6p3ykvd5e" path="res://scripts/ui/TitleScreen.cs" id="1_title"]
+[ext_resource type="Texture2D" uid="uid://cxd60tffs1ksx" path="res://resources/images/ui/Bigtree.png" id="2_ch40n"]
 
-[node name="TitleScreen" type="Control"]
+[node name="TitleScreen" type="Control" unique_id=1579975487]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,55 +12,73 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_title")
 
-[node name="Background" type="ColorRect" parent="."]
-anchors_preset = 15
+[node name="Background" type="ColorRect" parent="." unique_id=322070170]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.08, 0.08, 0.12, 1)
 mouse_filter = 2
+color = Color(0.08, 0.08, 0.12, 1)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=687838070]
+modulate = Color(1, 1, 1, 0.23137255)
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("2_ch40n")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1636913864]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBox" type="VBoxContainer" parent="CenterContainer"]
-theme_override_constants/separation = 16
+[node name="VBox" type="VBoxContainer" parent="CenterContainer" unique_id=1589365140]
 custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
 
-[node name="TitleLabel" type="Label" parent="CenterContainer/VBox"]
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBox" unique_id=1649503260]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 64
 text = "RPG Game"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 64
-theme_override_colors/font_color = Color(0.95, 0.85, 0.4, 1)
 
-[node name="Subtitle" type="Label" parent="CenterContainer/VBox"]
-text = "A creature-collecting adventure"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 16
+[node name="Subtitle" type="Label" parent="CenterContainer/VBox" unique_id=1244591441]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 16
+text = "A Basic rpg game on godot"
+horizontal_alignment = 1
 
-[node name="Spacer" type="Control" parent="CenterContainer/VBox"]
+[node name="Spacer" type="Control" parent="CenterContainer/VBox" unique_id=1719611073]
 custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
 
-[node name="NewGameButton" type="Button" parent="CenterContainer/VBox"]
+[node name="NewGameButton" type="Button" parent="CenterContainer/VBox" unique_id=2102758594]
 custom_minimum_size = Vector2(280, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "New Game"
-theme_override_font_sizes/font_size = 22
 
-[node name="LoadGameButton" type="Button" parent="CenterContainer/VBox"]
+[node name="LoadGameButton" type="Button" parent="CenterContainer/VBox" unique_id=475695940]
 custom_minimum_size = Vector2(280, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "Load Game"
-theme_override_font_sizes/font_size = 22
 
-[node name="SettingsButton" type="Button" parent="CenterContainer/VBox"]
+[node name="SettingsButton" type="Button" parent="CenterContainer/VBox" unique_id=1219931279]
 custom_minimum_size = Vector2(280, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "Settings"
-theme_override_font_sizes/font_size = 22
 
-[node name="ExitButton" type="Button" parent="CenterContainer/VBox"]
+[node name="ExitButton" type="Button" parent="CenterContainer/VBox" unique_id=1549275678]
 custom_minimum_size = Vector2(280, 48)
-text = "Exit"
+layout_mode = 2
 theme_override_font_sizes/font_size = 22
+text = "Exit"

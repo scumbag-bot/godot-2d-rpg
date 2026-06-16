@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://jv6wlauqcdc6" path="res://scripts/overworld/Overworld.cs" id="1_ow"]
 [ext_resource type="Texture2D" uid="uid://38bhmwti5b4f" path="res://resources/tilesets/Outside_A2.png" id="2_66q70"]
-[ext_resource type="PackedScene" uid="uid://b0dbox001" path="res://scenes/ui/DialogBox.tscn" id="2_db"]
 [ext_resource type="Script" uid="uid://8anmh0ra1wad" path="res://scripts/overworld/Npc.cs" id="4_npc"]
 [ext_resource type="Script" uid="uid://cu7m2v21g0020" path="res://scripts/overworld/Enemy.cs" id="5_en"]
 [ext_resource type="Script" uid="uid://ca4d4r4lsot6q" path="res://scripts/overworld/TownStarter.cs" id="6_ts"]
@@ -1893,6 +1892,17 @@ terrain_set_0/terrain_0/name = "Ground"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_7q67j")
 
+[sub_resource type="Resource" id="Res_DialogLine_1"]
+script = ExtResource("10_dlgline")
+SpeakerName = "Elder"
+Text = "Who are you?"
+
+[sub_resource type="Resource" id="Resource_7q67j"]
+script = ExtResource("10_dlgline")
+SpeakerName = "Elder 2"
+Text = "Why are you here? are you here to rob our village?"
+metadata/_custom_type_script = "uid://cut5qlclogv7y"
+
 [sub_resource type="RectangleShape2D" id="RectShape_npc"]
 size = Vector2(32, 32)
 
@@ -1901,11 +1911,6 @@ size = Vector2(32, 32)
 
 [sub_resource type="RectangleShape2D" id="RectShape_warp"]
 size = Vector2(800, 32)
-
-[sub_resource type="Resource" id="Res_DialogLine_1"]
-script = ExtResource("10_dlgline")
-SpeakerName = "Elder"
-Text = "Who are you?"
 
 [node name="Town" type="Node2D" unique_id=1990011996]
 script = ExtResource("1_ow")
@@ -1922,12 +1927,11 @@ color = Color(0.3, 0.5, 0.3, 1)
 
 [node name="Player" parent="." unique_id=530685434 instance=ExtResource("9_player")]
 position = Vector2(400, 400)
-Speed = 120
 
 [node name="Npc" type="Area2D" parent="." unique_id=1183842659]
 position = Vector2(300, 300)
 script = ExtResource("4_npc")
-Lines = [SubResource("Res_DialogLine_1")]
+Lines = [SubResource("Res_DialogLine_1"), SubResource("Resource_7q67j")]
 
 [node name="Sprite" type="ColorRect" parent="Npc" unique_id=2136368128]
 offset_left = -8.0
