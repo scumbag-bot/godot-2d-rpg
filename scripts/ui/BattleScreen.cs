@@ -27,6 +27,7 @@ public partial class BattleScreen : Control
         bm.HpChanged += OnHpChanged;
         bm.Message += OnMessage;
         bm.BattleEnded += OnBattleEnded;
+        bm.StateChanged += OnStateChanged;
         GetNode<Button>("ActionMenu/FightButton").Pressed += OpenMovePicker;
         GetNode<Button>("ActionMenu/CreatureButton").Pressed += OpenParty;
         GetNode<Button>("ActionMenu/ItemButton").Pressed += OpenItems;
@@ -42,12 +43,18 @@ public partial class BattleScreen : Control
             bm.HpChanged -= OnHpChanged;
             bm.Message -= OnMessage;
             bm.BattleEnded -= OnBattleEnded;
+            bm.StateChanged -= OnStateChanged;
         }
     }
 
     private void OnBattleStarted(bool isWild)
     {
         ShowActionMenu();
+    }
+
+    private void OnStateChanged(int state)
+    {
+        if (state == (int)BattleState.PlayerTurn) ShowActionMenu();
     }
 
     private void OnHpChanged(int side, int hp, int hpMax)
