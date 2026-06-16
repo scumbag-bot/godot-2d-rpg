@@ -101,7 +101,7 @@ public partial class BattleManager : Node
 
 	private void TryAdvanceOnBattleWin(StringName defeatedSpeciesId)
 	{
-		var quest = GD.Load<QuestData>("res://resources/data/quests/MainQuest.tres");
+		var quest = GD.Load<QuestData>(QuestPaths.Main);
 		if (quest == null) return;
 		var qs = GetNode<QuestStore>("/root/QuestStore");
 		var stageIdx = qs.GetStage(quest.Id);
