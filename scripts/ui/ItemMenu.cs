@@ -26,12 +26,8 @@ public partial class ItemMenu : Control
         Visible = true;
         if (SlotContainer == null) return;
         foreach (var child in SlotContainer.GetChildren()) child.QueueFree();
-        var items = new (string Name, string Desc)[]
-        {
-            ("Potion", "+20 HP"),
-            ("Revive", "50% HP from 0"),
-        };
-        if (items.Length == 0)
+        var inv = GetNode<GameState>("/root/GameState").Inventory;
+        if (inv.Count == 0)
         {
             var row = new HBoxContainer();
             var label = new Label
@@ -43,10 +39,11 @@ public partial class ItemMenu : Control
             SlotContainer.AddChild(row);
             return;
         }
-        foreach (var (name, desc) in items)
+        foreach (var (name, count) in inv)
         {
+            var (displayName, desc) = GetItemInfo(name);
             var row = new HBoxContainer();
-            row.AddChild(new Label { Text = name });
+            row.AddChild(new Label { Text = $"{displayName} x{count}" });
             row.AddChild(new Label { Text = "  " + desc });
             var btn = new Button { Text = "Use" };
             var capturedName = name;
@@ -56,15 +53,36 @@ public partial class ItemMenu : Control
         }
     }
 
+    private (string Name, string Desc) GetItemInfo(string name)
+    {
+        return name switch
+        {
+            "Dummy Potion" => ("Dummy Potion", "+5 HP"),
+            "Potion" => ("Potion", "+20 HP"),
+            "Revive" => ("Revive", "50% HP from 0"),
+            _ => (name, ""),
+        };
+    }
+
     private void UseItem(string name)
     {
+        var gs = GetNode<GameState>("/root/GameState");
+        if (!gs.Inventory.ContainsKey(name) || gs.Inventory[name] <= 0) return;
         var party = GetNode<Party>("/root/Party");
         var active = party.Active;
         if (active == null) return;
-        if (name == "Potion") active.Heal(20);
+        int heal = name switch
+        {
+            "Dummy Potion" => 5,
+            "Potion" => 20,
+            "Revive" => 0,
+            _ => 0,
+        };
         if (name == "Revive" && active.IsFainted) active.Heal(active.MaxHp / 2);
-        Visible = false;
-        var actionMenu = GetNodeOrNull<Control>("/root/Battle/ActionMenu");
-        if (actionMenu != null) actionMenu.Visible = true;
+        else if (heal > 0) active.Heal(heal);
+        gs.Inventory[name]--;
+        if (gs.Inventory[name] <= 0) gs.Inventory.Remove(name);
+        Show();
+        if (gs.Inventory.Count == 0) OnBackPressed();
     }
 }
