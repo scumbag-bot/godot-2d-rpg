@@ -77,18 +77,20 @@ Stages = [SubResource("Stage0"), SubResource("Stage1"), SubResource("Stage2"), S
 
 ## How to add a new quest entirely
 
-V1 is wired for a single hardcoded quest path (`QuestPaths.Main`). To add a second quest, you'd need to:
+Multi-quest is now wired. Adding a side quest is:
 
-1. Create `resources/data/quests/SideQuest1.tres` following the same structure as `MainQuest.tres` (new `Id = &"side1"`, new stages).
-2. Add a const in `scripts/data/QuestPaths.cs`:
-   ```csharp
-   public const string Side1 = "res://resources/data/quests/SideQuest1.tres";
-   ```
-3. Decide who triggers which quest:
-   - `Npc` currently hardcodes `MainQuestId = "main"` at `Npc.cs:11`. To make NPCs quest-pickable, restore the `[Export] public StringName ActiveQuestId` field (was dropped in commit `82acfac`) and load the matching quest path from a per-quest map.
-   - `BattleManager.TryAdvanceOnBattleWin` only checks `MainQuest`. Either expand it to iterate all quests, or have each quest register its battle triggers somewhere.
+1. **Drop a `.tres` file** in `resources/data/quests/` (e.g. `SideQuest1.tres`) with `Id = &"side1"` and your stages. The file format is identical to `MainQuest.tres` — see `SampleQuest.tres` for a 2-stage example.
+2. **Add an NPC** that drives it: `ActiveQuestId = &"side1"`, `NpcId = &"..."` in the scene. If the NPC should auto-start the quest on first contact, set `StartQuestOnFirstContact = true`.
+3. **For `BattleWin` triggers:** nothing else needed. `BattleManager.TryAdvanceOnBattleWin` (BattleManager.cs:102-122) scans `resources/data/quests/` and advances any quest whose current stage matches `BattleWin` + `TargetSpeciesId`.
+4. **For `NpcContact` triggers:** set `TargetNpcId` on the stage to match the NPC's `NpcId`. Nothing else.
 
-This is **deferred to v1.1+**. Plan caveat #5: "Single hardcoded `main` quest key is fine for v1."
+The plumbing is driven by two directory scans:
+- `Npc.ResolveActiveQuest` (Npc.cs:74-86) scans for a .tres whose `Id == ActiveQuestId`.
+- `BattleManager.TryAdvanceOnBattleWin` (BattleManager.cs:102-122) scans for any .tres with a matching `BattleWin` stage.
+
+Adding a new quest = drop a .tres file + wire an NPC. No C# change needed for most cases.
+
+**Still hardcoded:** `QuestPaths.Main` is kept for back-compat / documentation. `QuestPaths.QuestsDir` is the directory both scans use. There's no per-quest type registry — `BattleWin` triggers don't differentiate between "main campaign battle" and "side quest battle", so any quest on a `BattleWin` stage will advance on the matching species win. Multi-quest combat semantics are simple: one species win can advance multiple quests.
 
 ## How to add a new dialog line to an existing stage
 
@@ -149,16 +151,21 @@ TargetSpeciesId = &"wolf"
 
 4. The advance fires automatically when the player wins. Capture happens regardless of quest state (auto-capture is unrelated to `TryAdvanceOnBattleWin`).
 
-## How to start a quest (the entry-trigger problem)
+## How to start a quest
 
-`QuestStore.GetStage("main")` starts at `-1`. Nothing in `Npc.OnBodyEntered` advances `-1 → 0` — `Npc` short-circuits to its `Lines` fallback at stage `-1`. So **a quest must be explicitly started from somewhere**.
+`QuestStore.GetStage("<id>")` starts at `-1`. Without an entry trigger, `Npc.OnBodyEntered` short-circuits to its `Lines` fallback at stage `-1`. So **a quest must be explicitly started from somewhere**.
 
-Current production wiring: `scripts/overworld/TownStarter.cs:30` calls `GetNode<QuestStore>("/root/QuestStore").SetStage("main", 0);` immediately after gifting the player the starter Wolf. That's the only entry trigger.
+Two ways to start a quest:
 
-If you want a new quest (or a new way to start MainQuest) to be entry-triggered:
-- Find a one-time event (e.g. scene `_Ready`, an `Area2D` body-enter, a button press).
-- Call `GetNode<QuestStore>("/root/QuestStore").SetStage("<quest_id>", 0);` once.
-- Guard against double-fire (TownStarter uses a `_given` bool field).
+### Option A: NPC auto-starts on first contact
+
+Set `StartQuestOnFirstContact = true` on the `Npc` node (along with `ActiveQuestId = &"<id>"`). On first body-enter, `Npc.cs:34-37` calls `SetStage(ActiveQuestId, 0)` then continues to play stage 0's dialog. Guarded by the `GetStage == -1` check so re-entry doesn't re-fire. See `scenes/Town.tscn` Scout NPC for an example.
+
+### Option B: Custom starter logic
+
+For non-NPC entry triggers (TownStarter gifting a starter Wolf, a scene `_Ready`, a cutscene flag, etc.), call `GetNode<QuestStore>("/root/QuestStore").SetStage("<quest_id>", 0);` once. Guard against double-fire (TownStarter uses a `_given` bool field). See `scripts/overworld/TownStarter.cs:30` for the MainQuest example.
+
+Both options are safe to combine — `SetStage` only emits `StageAdvanced` if the value actually changes.
 
 ## How to programmatically check / set quest state
 

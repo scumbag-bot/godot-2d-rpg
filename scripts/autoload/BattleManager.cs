@@ -101,15 +101,21 @@ public partial class BattleManager : Node
 
 	private void TryAdvanceOnBattleWin(StringName defeatedSpeciesId)
 	{
-		var quest = GD.Load<QuestData>(QuestPaths.Main);
-		if (quest == null) return;
+		var questDir = DirAccess.Open(QuestPaths.QuestsDir);
+		if (questDir == null) return;
 		var qs = GetNode<QuestStore>("/root/QuestStore");
-		var stageIdx = qs.GetStage(quest.Id);
-		if (stageIdx < 0 || stageIdx >= quest.Stages.Count) return;
-		var stage = quest.Stages[stageIdx];
-		if (stage.AdvanceOn != QuestStage.AdvanceTrigger.BattleWin) return;
-		if (stage.TargetSpeciesId != defeatedSpeciesId) return;
-		qs.Advance(quest.Id);
+		foreach (var fileName in questDir.GetFiles())
+		{
+			if (!fileName.EndsWith(".tres")) continue;
+			var quest = GD.Load<QuestData>($"{QuestPaths.QuestsDir}{fileName}");
+			if (quest == null) continue;
+			var stageIdx = qs.GetStage(quest.Id);
+			if (stageIdx < 0 || stageIdx >= quest.Stages.Count) continue;
+			var stage = quest.Stages[stageIdx];
+			if (stage.AdvanceOn != QuestStage.AdvanceTrigger.BattleWin) continue;
+			if (stage.TargetSpeciesId != defeatedSpeciesId) continue;
+			qs.Advance(quest.Id);
+		}
 	}
 
 	private MoveDataLite PickEnemyMove()

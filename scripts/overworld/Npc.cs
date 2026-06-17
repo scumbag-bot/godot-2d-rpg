@@ -8,7 +8,8 @@ public partial class Npc : Area2D
 {
     [Export] public Godot.Collections.Array<DialogLine> Lines;
     [Export] public StringName NpcId = "";
-    private static readonly StringName MainQuestId = "main";
+    [Export] public StringName ActiveQuestId = "main";
+    [Export] public bool StartQuestOnFirstContact = false;
 
     private bool _awaitingDialogCompletion;
 
@@ -29,10 +30,16 @@ public partial class Npc : Area2D
         if (body is not Player) return;
         if (GetNode<DialogPlayer>("/root/DialogPlayer").IsActive) return;
 
+        var qs = GetNode<QuestStore>("/root/QuestStore");
+        if (StartQuestOnFirstContact && qs.GetStage(ActiveQuestId) == -1)
+        {
+            qs.SetStage(ActiveQuestId, 0);
+        }
+
         var quest = ResolveActiveQuest();
         if (quest != null)
         {
-            var stageIdx = GetNode<QuestStore>("/root/QuestStore").GetStage(MainQuestId);
+            var stageIdx = qs.GetStage(ActiveQuestId);
             if (stageIdx >= 0 && stageIdx < quest.Stages.Count)
             {
                 var stage = quest.Stages[stageIdx];
@@ -61,12 +68,20 @@ public partial class Npc : Area2D
     {
         if (!_awaitingDialogCompletion) return;
         _awaitingDialogCompletion = false;
-        GetNode<QuestStore>("/root/QuestStore").Advance(MainQuestId);
+        GetNode<QuestStore>("/root/QuestStore").Advance(ActiveQuestId);
     }
 
     private QuestData ResolveActiveQuest()
     {
-        return GD.Load<QuestData>(QuestPaths.Main);
+        var dir = DirAccess.Open(QuestPaths.QuestsDir);
+        if (dir == null) return null;
+        foreach (var fileName in dir.GetFiles())
+        {
+            if (!fileName.EndsWith(".tres")) continue;
+            var quest = GD.Load<QuestData>($"{QuestPaths.QuestsDir}{fileName}");
+            if (quest != null && quest.Id == ActiveQuestId) return quest;
+        }
+        return null;
     }
 
     private static DialogPerNpcEntry FindEntryForNpc(QuestStage stage, StringName npcId)

@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://uh0v6dtubkqo" path="res://scripts/overworld/WarpZone.cs" id="8_wz"]
 [ext_resource type="PackedScene" uid="uid://b0player001" path="res://scenes/Player.tscn" id="9_player"]
 [ext_resource type="Script" uid="uid://cut5qlclogv7y" path="res://scripts/data/DialogLine.cs" id="10_dlgline"]
+[ext_resource type="Resource" path="res://resources/data/encounters/SingleImp.tres" id="11_impentry"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7q67j"]
 texture = ExtResource("2_66q70")
@@ -1903,6 +1904,11 @@ SpeakerName = "Elder 2"
 Text = "Why are you here? are you here to rob our village?"
 metadata/_custom_type_script = "uid://cut5qlclogv7y"
 
+[sub_resource type="Resource" id="Res_DlgLine_ScoutFallback"]
+script = ExtResource("10_dlgline")
+SpeakerName = "Scout"
+Text = "Anything I can help with, traveler?"
+
 [sub_resource type="RectangleShape2D" id="RectShape_npc"]
 size = Vector2(32, 32)
 
@@ -1931,6 +1937,7 @@ position = Vector2(400, 400)
 [node name="Npc" type="Area2D" parent="." unique_id=1183842659]
 position = Vector2(300, 300)
 script = ExtResource("4_npc")
+ActiveQuestId = &"main"
 NpcId = &"elder"
 Lines = [SubResource("Res_DialogLine_1"), SubResource("Resource_7q67j")]
 
@@ -1942,6 +1949,24 @@ offset_bottom = 8.0
 color = Color(0.2, 0.4, 0.8, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Npc" unique_id=816774277]
+shape = SubResource("RectShape_npc")
+
+[node name="Scout" type="Area2D" parent="." unique_id=1938275111]
+position = Vector2(150, 200)
+script = ExtResource("4_npc")
+ActiveQuestId = &"sample"
+NpcId = &"scout"
+StartQuestOnFirstContact = true
+Lines = [SubResource("Res_DlgLine_ScoutFallback")]
+
+[node name="Sprite" type="ColorRect" parent="Scout" unique_id=1938275112]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.6, 0.3, 0.8, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scout" unique_id=1938275113]
 shape = SubResource("RectShape_npc")
 
 [node name="Enemy" type="Area2D" parent="." unique_id=1915682141]
@@ -1957,6 +1982,21 @@ offset_bottom = 8.0
 color = Color(0.8, 0.2, 0.2, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=886224023]
+shape = SubResource("RectShape_enemy")
+
+[node name="ImpEnemy" type="Area2D" parent="." unique_id=1938275114]
+position = Vector2(650, 500)
+script = ExtResource("5_en")
+Entry = ExtResource("11_impentry")
+
+[node name="Sprite" type="ColorRect" parent="ImpEnemy" unique_id=1938275115]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.2, 0.6, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ImpEnemy" unique_id=1938275116]
 shape = SubResource("RectShape_enemy")
 
 [node name="TownStarter" type="Node" parent="." unique_id=1262800163]

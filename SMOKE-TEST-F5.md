@@ -37,20 +37,22 @@ for full play-through.
 | 9 | Portrait TextureRect hidden when SpeakerPortrait is null | PASS |
 | 10 | DialogBox.Instance null guard in DialogPlayer.Play | PASS |
 
-## Quest System (main quest)
+## Quest System
 
 | # | Check | Result |
 |---|---|---|
 | 1 | `MainQuest.tres` has 6 stages with AdvanceOn + target fields; sub_resources before [resource]; load_steps=19 | PASS |
-| 2 | `Npc.cs` loads `res://resources/data/quests/MainQuest.tres` (hardcoded) | PASS |
-| 3 | `BattleManager.cs` loads same hardcoded path in `TryAdvanceOnBattleWin` | PASS |
-| 4 | `Town.tscn` Elder Npc has `NpcId = &"elder"` AND retains `Lines` fallback | PASS |
-| 5 | `project.godot` has `QuestStore="*res://scripts/autoload/QuestStore.cs"` | PASS |
-| 6 | `QuestState` (pure C#) split from `QuestStore` (Node) per BattleStateMachine/BattleManager precedent | PASS |
-| 7 | `Npc._ExitTree` unsubscribes `DialogPlayer.DialogFinished` (no leak) | PASS |
-| 8 | `QuestStore.Advance` only emits `StageAdvanced` when state actually changes | PASS |
-| 9 | `BattleManager.TryAdvanceOnBattleWin` short-circuits on stage -1 (pre-quest) | PASS |
-| 10 | `dotnet test` -> 25/25 passed (18 existing + 7 QuestState tests) | PASS |
+| 2 | `SampleQuest.tres` has 2 stages (scout_intro, imp_bounty); load_steps=10 | PASS |
+| 3 | `Npc.cs` exposes `[Export] ActiveQuestId` + `[Export] StartQuestOnFirstContact`; per-NPC quest id | PASS |
+| 4 | `Npc.ResolveActiveQuest` scans `resources/data/quests/` for a .tres matching `ActiveQuestId` | PASS |
+| 5 | `BattleManager.TryAdvanceOnBattleWin` scans all quests in the dir for matching BattleWin stage | PASS |
+| 6 | `QuestPaths.cs` exposes `Main` (kept for docs/back-compat) + `QuestsDir` (used by scans) | PASS |
+| 7 | `Town.tscn` Elder has `ActiveQuestId=&"main"` + `NpcId=&"elder"` + retains `Lines` fallback | PASS |
+| 8 | `Town.tscn` Scout has `ActiveQuestId=&"sample"` + `NpcId=&"scout"` + `StartQuestOnFirstContact=true` | PASS |
+| 9 | `Town.tscn` has new ImpEnemy Area2D referencing `SingleImp.tres` (so sample quest is reachable in Town) | PASS |
+| 10 | `Npc._ExitTree` unsubscribes `DialogPlayer.DialogFinished` (no leak) | PASS |
+| 11 | `QuestStore.Advance` only emits `StageAdvanced` when state actually changes | PASS |
+| 12 | `dotnet test` -> 25/25 passed (18 existing + 7 QuestState tests) | PASS |
 
 ## Runtime paths to validate in Godot editor
 
@@ -69,15 +71,23 @@ for full play-through.
 
 ## Quest runtime path to validate in Godot editor
 
-1. New Game -> Town. `QuestStore.GetStage("main")` returns -1 (no progress).
-2. Walk into Elder -> falls back to `Lines` export ("Who are you?" + "Why are you here?") since stage is -1 < 0.
-3. Force-advance stage to 0 (no UI for this in v1; can test by editing TownStarter to call `QuestStore.SetStage("main", 0)`).
-4. Walk into Elder -> plays `DlgEntry_Elder_0` ("Brave tamer..." + "Take this Wolf..."). On dialog end, `_awaitingDialogCompletion` triggers `Advance` -> stage 1.
-5. Walk into Wolf encounter, win battle -> `TryAdvanceOnBattleWin` matches `BattleWin` + species `wolf` -> stage 2.
-6. Walk into Elder -> plays `DlgEntry_Elder_2` ("You returned..." + "Seek the Treant..."). Stage advances to 3.
-7. Walk into Cave (stage 3 `AreaEnter` target `cave`) -> not implemented in v1; stage 3 stays.
-8. (Manual SetStage to 4 for testing) Battle Treant in BossRoom -> stage 5.
-9. Walk into Elder -> plays `DlgEntry_Elder_5` ("The land is saved..."). Stage stays at 5 (`AdvanceOn = None`).
+**Main quest:**
+
+1. New Game -> Town. `QuestStore.GetStage("main")` returns -1.
+2. Walk into Elder -> `TownStarter` fires, gifts Wolf + plays "You received a Wolf!" + "Press on, brave tamer." and calls `SetStage("main", 0)`. (Race: `Npc.OnBodyEntered` may also fire and play `DlgEntry_Elder_0` if signal subscription order favours it. Plan caveat #4.)
+3. Walk into Elder again -> plays `DlgEntry_Elder_0` ("Brave tamer..." + "Take this Wolf..."). On dialog end, `Advance("main")` -> stage 1.
+4. Walk into Wolf encounter, win battle -> `TryAdvanceOnBattleWin` matches `BattleWin` + `wolf` -> stage 2.
+5. Walk into Elder -> plays `DlgEntry_Elder_2` ("You returned..." + "Seek the Treant..."). Stage advances to 3.
+6. Walk into Cave (stage 3 `AreaEnter` target `cave`) -> not implemented in v1; stage 3 stays.
+7. (Manual `SetStage("main", 4)` for testing) Battle Treant in BossRoom -> stage 5.
+8. Walk into Elder -> plays `DlgEntry_Elder_5` ("The land is saved..."). Stage stays at 5 (`AdvanceOn = None`).
+
+**Sample quest** (Bounty: Imp Trouble):
+
+1. New Game -> Town. `QuestStore.GetStage("sample")` returns -1.
+2. Walk into Scout NPC -> `StartQuestOnFirstContact` fires, `SetStage("sample", 0)`. Then `Npc` plays `DlgEntry_Scout_0` ("Imps are raiding..." + "Knock one down..."). On dialog end, `Advance("sample")` -> stage 1.
+3. Walk into ImpEnemy (green sprite at (650, 500)) -> wild battle vs level-4 Imp. Win -> `TryAdvanceOnBattleWin` scans all quests, finds `SampleQuest`, matches `BattleWin` + `imp` -> stage 2 (past end). Sample quest complete.
+4. Walk into Scout again -> no `DialogPerNpc` entry for stage 2 (out of range) -> falls back to `Lines` export ("Anything I can help with, traveler?").
 
 ## Build / test
 
