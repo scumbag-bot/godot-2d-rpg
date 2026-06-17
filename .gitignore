@@ -5,3 +5,29 @@
 # .NET build outputs
 **/bin/
 **/obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+
+# Godot-generated UID sidecars (regenerated on editor open)
+*.cs.uid
+*.tscn.uid
+*.gd.uid
+*.tres.uid
+
+# IDE / editor
+.vs/
+.idea/
+*.code-workspace
+.superpowers/
+
+# Stale SDK bump leftover (per AGENTS.md)
+RPG-Game.csproj.old
+
+# Plugin install artifacts (download zips left after extraction)
+addons/*.zip
+
+# OS junk
+.DS_Store
+Thumbs.db
