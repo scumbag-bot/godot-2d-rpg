@@ -18,6 +18,7 @@ public partial class BattleManager : Node
 	public CreatureInstance EnemyInstance { get; private set; }
 	public bool IsWild { get; private set; }
 	public EncounterEntry CurrentEntry { get; private set; }
+	public EncounterPack CurrentPack { get; private set; }
 	public EncounterEntry LastBattleEntry { get; private set; }
 	public int LastBattleOutcome { get; private set; }
 
@@ -30,6 +31,7 @@ public partial class BattleManager : Node
 		}
 		IsWild = true;
 		CurrentEntry = entry;
+		CurrentPack = new EncounterPack(entry);
 		PlayerInstance = GetNode<Party>("/root/Party").Active;
 		if (PlayerInstance == null)
 		{
@@ -64,7 +66,7 @@ public partial class BattleManager : Node
 			}
 			if (IsWild && CurrentEntry?.Species != null)
 			{
-				TryAdvanceOnBattleWin(CurrentEntry.Species.Id);
+				GetNode<QuestTracker>("/root/QuestTracker").OnBattleWin(CurrentPack);
 			}
 			EmitSignal(SignalName.BattleEnded, (int)BattleState.Victory);
 			LastBattleEntry = CurrentEntry;
@@ -97,25 +99,6 @@ public partial class BattleManager : Node
 			return;
 		}
 		EmitSignal(SignalName.StateChanged, (int)BattleState.PlayerTurn);
-	}
-
-	private void TryAdvanceOnBattleWin(StringName defeatedSpeciesId)
-	{
-		var questDir = DirAccess.Open(QuestPaths.QuestsDir);
-		if (questDir == null) return;
-		var qs = GetNode<QuestStore>("/root/QuestStore");
-		foreach (var fileName in questDir.GetFiles())
-		{
-			if (!fileName.EndsWith(".tres")) continue;
-			var quest = GD.Load<QuestData>($"{QuestPaths.QuestsDir}{fileName}");
-			if (quest == null) continue;
-			var stageIdx = qs.GetStage(quest.Id);
-			if (stageIdx < 0 || stageIdx >= quest.Stages.Count) continue;
-			var stage = quest.Stages[stageIdx];
-			if (stage.AdvanceOn != QuestStage.AdvanceTrigger.BattleWin) continue;
-			if (stage.TargetSpeciesId != defeatedSpeciesId) continue;
-			qs.Advance(quest.Id);
-		}
 	}
 
 	private MoveDataLite PickEnemyMove()

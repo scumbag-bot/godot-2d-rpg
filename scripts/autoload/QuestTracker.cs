@@ -62,10 +62,14 @@ public partial class QuestTracker : Node
         RefreshHud();
     }
 
-    public void OnBattleWin(EncounterEntry entry)
+    public void OnBattleWin(EncounterPack pack)
     {
-        if (entry?.Species == null) return;
-        TryAdvanceByTrigger(QuestStage.AdvanceTrigger.BattleWin, null, entry.Species.Id.ToString(), null);
+        if (pack?.Entries == null) return;
+        foreach (var entry in pack.Entries)
+        {
+            if (entry?.Species == null) continue;
+            TryAdvanceByTrigger(QuestStage.AdvanceTrigger.BattleWin, null, entry.Species.Id.ToString(), null);
+        }
     }
 
     public void OnAreaEnter(StringName areaId)
