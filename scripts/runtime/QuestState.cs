@@ -29,4 +29,19 @@ public class QuestState
     public bool SetFlag(string flagName) => _flags.Add(flagName);
 
     public bool ClearFlag(string flagName) => _flags.Remove(flagName);
+
+    public bool AdvanceWithBounds(string questId, int maxStage)
+    {
+        var current = GetStage(questId);
+        if (current >= maxStage) return false;
+        SetStage(questId, current + 1);
+        return true;
+    }
+
+    public bool SetStageGuarded(string questId, int stage)
+    {
+        if (stage < -1) return false;
+        SetStage(questId, stage);
+        return true;
+    }
 }
