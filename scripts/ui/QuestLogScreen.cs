@@ -63,13 +63,17 @@ public partial class QuestLogScreen : CanvasLayer
         _closeHint.AddThemeFontSizeOverride("font_size", 11);
         _closeHint.SetPosition(new Vector2(10, 365));
         panel.AddChild(_closeHint);
+
+        SetProcessInput(true);
     }
 
-    public override void _Process(double delta)
+    public override void _Input(InputEvent @event)
     {
-        if (Input.IsActionJustPressed("quest_log"))
+        if (@event.IsActionPressed("quest_log"))
+        {
             Toggle();
-        if (_visible) Refresh();
+            GetViewport().SetInputAsHandled();
+        }
     }
 
     public void Toggle()
@@ -81,7 +85,8 @@ public partial class QuestLogScreen : CanvasLayer
 
     private void Refresh()
     {
-        var tracker = GetNode<QuestTracker>("/root/QuestTracker");
+        var tracker = GetNodeOrNull<QuestTracker>("/root/QuestTracker");
+        if (tracker == null) return;
         var quests = tracker.GetAllQuests();
 
         ClearChildren(_mainSection);
@@ -138,7 +143,6 @@ public partial class QuestLogScreen : CanvasLayer
             var fillBar = new ColorRect();
             fillBar.CustomMinimumSize = new Vector2((float)(stage + 1) / total * 440, 4);
             fillBar.Color = new Color(0.75f, 0.63f, 0.38f);
-            fillBar.SetPosition(new Vector2(0, 0));
             bar.AddChild(fillBar);
 
             if (!string.IsNullOrEmpty(quest.Stages[stage].ObjectiveText))
