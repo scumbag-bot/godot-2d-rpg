@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using Godot;
 using rpg_game.scripts.data;
+using rpg_game.scripts.ui;
 
 namespace rpg_game.scripts.autoload;
 
 public partial class QuestTracker : Node
 {
-    private Node _logScreen;
+    private QuestLogScreen _logScreen;
     private Label _hudLabel;
     private Label _toastLabel;
     private Tween _toastTween;
@@ -45,7 +46,7 @@ public partial class QuestTracker : Node
     {
         var scene = GD.Load<PackedScene>("res://scenes/QuestLogScreen.tscn");
         if (scene == null) return;
-        _logScreen = scene.Instantiate();
+        _logScreen = scene.Instantiate<QuestLogScreen>();
         if (_logScreen != null) AddChild(_logScreen);
     }
 
@@ -79,8 +80,7 @@ public partial class QuestTracker : Node
 
     public void ToggleLog()
     {
-        if (_logScreen == null) return;
-        _logScreen.Call("Toggle");
+        _logScreen?.Toggle();
     }
 
     public IReadOnlyList<QuestData> GetAllQuests()

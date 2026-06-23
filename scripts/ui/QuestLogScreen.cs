@@ -57,28 +57,18 @@ public partial class QuestLogScreen : CanvasLayer
         vbox.AddChild(_sideSection);
 
         _closeHint = new Label();
-        _closeHint.Text = "Press Q to close";
+        _closeHint.Text = "Press Q or Tab to close";
         _closeHint.HorizontalAlignment = HorizontalAlignment.Center;
         _closeHint.AddThemeColorOverride("font_color", new Color(0.44f, 0.38f, 0.25f));
         _closeHint.AddThemeFontSizeOverride("font_size", 11);
         _closeHint.SetPosition(new Vector2(10, 365));
         panel.AddChild(_closeHint);
-
-        SetProcessInput(true);
-        SetProcess(true);
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        if (@event.IsActionPressed("quest_log"))
-        {
-            Toggle();
-            GetViewport().SetInputAsHandled();
-        }
     }
 
     public override void _Process(double delta)
     {
+        if (Input.IsActionJustPressed("quest_log"))
+            Toggle();
         if (_visible) Refresh();
     }
 
