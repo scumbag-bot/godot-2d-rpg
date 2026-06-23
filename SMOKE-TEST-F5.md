@@ -45,7 +45,7 @@ for full play-through.
 | 2 | `SampleQuest.tres` has 2 stages (scout_intro, imp_bounty); load_steps=10 | PASS |
 | 3 | `Npc.cs` exposes `[Export] ActiveQuestId` + `[Export] StartQuestOnFirstContact`; per-NPC quest id | PASS |
 | 4 | `Npc.ResolveActiveQuest` scans `resources/data/quests/` for a .tres matching `ActiveQuestId` | PASS |
-| 5 | `BattleManager.TryAdvanceOnBattleWin` scans all quests in the dir for matching BattleWin stage | PASS |
+| 5 | `BattleManager.PlayerAttack` calls `QuestTracker.OnBattleWin(CurrentPack)` on wild victory; QuestTracker scans dir for matching BattleWin stage + species | PASS |
 | 6 | `QuestPaths.cs` exposes `Main` (kept for docs/back-compat) + `QuestsDir` (used by scans) | PASS |
 | 7 | `Town.tscn` Elder has `ActiveQuestId=&"main"` + `NpcId=&"elder"` + retains `Lines` fallback | PASS |
 | 8 | `Town.tscn` Scout has `ActiveQuestId=&"sample"` + `NpcId=&"scout"` + `StartQuestOnFirstContact=true` | PASS |
@@ -53,6 +53,19 @@ for full play-through.
 | 10 | `Npc._ExitTree` unsubscribes `DialogPlayer.DialogFinished` (no leak) | PASS |
 | 11 | `QuestStore.Advance` only emits `StageAdvanced` when state actually changes | PASS |
 | 12 | `dotnet test` -> 25/25 passed (18 existing + 7 QuestState tests) | PASS |
+| 13 | `QuestState.AdvanceWithBounds` guards against stage overshoot (returns false at last stage) | PASS |
+| 14 | `QuestStore.Advance` chains `NextQuestId` when stage reaches end | PASS |
+| 15 | `QuestStore.QuestCompleted` signal fires when stage reaches/passes last | PASS |
+| 16 | `QuestTracker` autoload registered in `project.godot`, subscribed to `StageAdvanced` + `QuestCompleted` | PASS |
+| 17 | `QuestTracker` HUD Label shows current quest + objective text (hidden when no active quest) | PASS |
+| 18 | `QuestLogScreen` toggles on Q key press (`quest_log` InputMap action, physical_keycode=81) | PASS |
+| 19 | `QuestLogScreen` groups by category (Main/Side), shows progress bars, current objective | PASS |
+| 20 | `QuestTracker.ShowToast` displays "Quest Complete!" on `QuestCompleted` (fade in/out via Tween) | PASS |
+| 21 | `QuestArea` Area2D node exists with `TargetAreaId` export, calls `QuestTracker.OnAreaEnter` | PASS |
+| 22 | `MainQuest.tres` has `ObjectiveText` on all 6 stages + `QuestCategory = 0` | PASS |
+| 23 | `SampleQuest.tres` has `ObjectiveText` on both stages + `QuestCategory = 1` | PASS |
+| 24 | `QuestPaths.cs` no longer has dead `Main` const | PASS |
+| 25 | `dotnet test` -> 31/31 passed (25 existing + 6 QuestStateBounds) | PASS |
 
 ## Runtime paths to validate in Godot editor
 
@@ -78,7 +91,7 @@ for full play-through.
 3. Walk into Elder again -> plays `DlgEntry_Elder_0` ("Brave tamer..." + "Take this Wolf..."). On dialog end, `Advance("main")` -> stage 1.
 4. Walk into Wolf encounter, win battle -> `TryAdvanceOnBattleWin` matches `BattleWin` + `wolf` -> stage 2.
 5. Walk into Elder -> plays `DlgEntry_Elder_2` ("You returned..." + "Seek the Treant..."). Stage advances to 3.
-6. Walk into Cave (stage 3 `AreaEnter` target `cave`) -> not implemented in v1; stage 3 stays.
+6. Walk into Cave → `QuestArea` node with `TargetAreaId = &"cave"` fires `OnAreaEnter` → scans dir → advances to stage 4 (QuestArea must be placed in Cave scene by designer).
 7. (Manual `SetStage("main", 4)` for testing) Battle Treant in BossRoom -> stage 5.
 8. Walk into Elder -> plays `DlgEntry_Elder_5` ("The land is saved..."). Stage stays at 5 (`AdvanceOn = None`).
 
@@ -86,12 +99,12 @@ for full play-through.
 
 1. New Game -> Town. `QuestStore.GetStage("sample")` returns -1.
 2. Walk into Scout NPC -> `StartQuestOnFirstContact` fires, `SetStage("sample", 0)`. Then `Npc` plays `DlgEntry_Scout_0` ("Imps are raiding..." + "Knock one down..."). On dialog end, `Advance("sample")` -> stage 1.
-3. Walk into ImpEnemy (green sprite at (650, 500)) -> wild battle vs level-4 Imp. Win -> `TryAdvanceOnBattleWin` scans all quests, finds `SampleQuest`, matches `BattleWin` + `imp` -> stage 2 (past end). Sample quest complete.
+3. Walk into ImpEnemy (green sprite at (650, 500)) -> wild battle vs level-4 Imp. Win -> `BattleManager` calls `QuestTracker.OnBattleWin(CurrentPack)` -> scans all quests in dir, finds `SampleQuest`, matches `BattleWin` + `imp` -> stage 2 (past end). Sample quest complete.
 4. Walk into Scout again -> no `DialogPerNpc` entry for stage 2 (out of range) -> falls back to `Lines` export ("Anything I can help with, traveler?").
 
 ## Build / test
 
 ```
 dotnet build rpg-game.sln -c Debug   # 0 errors
-dotnet test tests/rpg-game.Tests/rpg-game.Tests.csproj   # 25/25
+dotnet test tests/rpg-game.Tests/rpg-game.Tests.csproj   # 31/31
 ```
