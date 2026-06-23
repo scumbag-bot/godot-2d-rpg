@@ -18,6 +18,27 @@ dotnet test tests/rpg-game.Tests/rpg-game.Tests.csproj
 
 Runtime smoke checks (since the F5 editor isn't available in all environments): `SMOKE-TEST-F5.md`.
 
+## Godot AI MCP setup
+
+The [Godot AI](https://github.com/hi-godot/godot-ai) plugin connects AI assistants (Claude Code, Codex, etc.) to a live Godot editor over MCP — inspect scenes, create nodes, modify properties, run tests, all from a prompt.
+
+**Requirements:** Godot 4.3+, [uv](https://docs.astral.sh/uv/) (Python package manager), and an MCP client.
+
+```powershell
+# 1. Install uv (Windows PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# 2. Copy addon into project
+git clone https://github.com/hi-godot/godot-ai.git $env:TEMP\godot-ai
+Copy-Item -Recurse "$env:TEMP\godot-ai\addons\godot_ai" "addons\"
+Remove-Item -Recurse $env:TEMP\godot-ai
+
+# 3. Open project.godot, enable plugin: Project > Project Settings > Plugins > Godot AI
+# 4. Pick MCP client in the Godot AI dock, press Configure
+```
+
+The addon is gitignored — each developer installs it locally.
+
 ## Tech stack
 
 - **Engine:** Godot 4.6 (C# / .NET 8)

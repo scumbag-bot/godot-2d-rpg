@@ -25,8 +25,8 @@
 # Stale SDK bump leftover (per AGENTS.md)
 RPG-Game.csproj.old
 
-# Plugin install artifacts (download zips left after extraction)
-addons/*.zip
+# Plugin install artifacts (not tracked — install per README)
+addons/
 
 # OS junk
 .DS_Store
