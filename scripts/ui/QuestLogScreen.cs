@@ -173,7 +173,11 @@ public partial class QuestLogScreen : CanvasLayer
 
     private static void ClearChildren(Container parent)
     {
-        while (parent.GetChildCount() > 0)
-            parent.GetChild(0).QueueFree();
+        var children = parent.GetChildren();
+        foreach (var child in children)
+        {
+            parent.RemoveChild(child);
+            child.QueueFree();
+        }
     }
 }
