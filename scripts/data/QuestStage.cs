@@ -13,4 +13,5 @@ public partial class QuestStage : Resource
     [Export] public StringName TargetNpcId { get; set; } = "";
     [Export] public StringName TargetSpeciesId { get; set; } = "";
     [Export] public StringName TargetAreaId { get; set; } = "";
+    [Export] public string ObjectiveText { get; set; } = "";
 }

@@ -51,6 +51,7 @@ Id = &"intro"
 DialogPerNpc = [SubResource("DlgEntry_Elder_0")]
 AdvanceOn = 1
 TargetNpcId = &"elder"
+ObjectiveText = "Speak to the Elder in Town"
 
 [sub_resource type="Resource" id="Stage1"]
 script = ExtResource("2_qstage")
@@ -58,6 +59,7 @@ Id = &"first_battle"
 DialogPerNpc = []
 AdvanceOn = 2
 TargetSpeciesId = &"wolf"
+ObjectiveText = "Defeat a Wolf in the forest"
 
 [sub_resource type="Resource" id="Stage2"]
 script = ExtResource("2_qstage")
@@ -65,6 +67,7 @@ Id = &"elder_blessing"
 DialogPerNpc = [SubResource("DlgEntry_Elder_2")]
 AdvanceOn = 1
 TargetNpcId = &"elder"
+ObjectiveText = "Return to the Elder in Town"
 
 [sub_resource type="Resource" id="Stage3"]
 script = ExtResource("2_qstage")
@@ -72,6 +75,7 @@ Id = &"cave_enter"
 DialogPerNpc = []
 AdvanceOn = 3
 TargetAreaId = &"cave"
+ObjectiveText = "Enter the Cave to the north"
 
 [sub_resource type="Resource" id="Stage4"]
 script = ExtResource("2_qstage")
@@ -79,12 +83,14 @@ Id = &"boss"
 DialogPerNpc = []
 AdvanceOn = 2
 TargetSpeciesId = &"treant"
+ObjectiveText = "Defeat the Treant in the cave"
 
 [sub_resource type="Resource" id="Stage5"]
 script = ExtResource("2_qstage")
 Id = &"complete"
 DialogPerNpc = [SubResource("DlgEntry_Elder_5")]
 AdvanceOn = 0
+ObjectiveText = "Quest complete — speak to the Elder"
 
 [resource]
 script = ExtResource("1_qdata")
@@ -92,3 +98,4 @@ Id = &"main"
 DisplayName = "Main Quest"
 Stages = [SubResource("Stage0"), SubResource("Stage1"), SubResource("Stage2"), SubResource("Stage3"), SubResource("Stage4"), SubResource("Stage5")]
 StartStage = 0
+QuestCategory = 0

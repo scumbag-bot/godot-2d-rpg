@@ -26,6 +26,7 @@ Id = &"scout_intro"
 DialogPerNpc = [SubResource("DlgEntry_Scout_0")]
 AdvanceOn = 1
 TargetNpcId = &"scout"
+ObjectiveText = "Speak to the Scout in Town"
 
 [sub_resource type="Resource" id="Stage1"]
 script = ExtResource("2_qstage")
@@ -33,6 +34,7 @@ Id = &"imp_bounty"
 DialogPerNpc = []
 AdvanceOn = 2
 TargetSpeciesId = &"imp"
+ObjectiveText = "Defeat an Imp outside Town"
 
 [resource]
 script = ExtResource("1_qdata")
@@ -40,3 +42,4 @@ Id = &"sample"
 DisplayName = "Bounty: Imp Trouble"
 Stages = [SubResource("Stage0"), SubResource("Stage1")]
 StartStage = 0
+QuestCategory = 1
